@@ -1,5 +1,22 @@
 import java.util.Scanner;
 
+class Student {
+    String usn;                                      // instance variables: every Student has its own copy
+    String name;
+    String branch;
+    String phone;
+
+    Student(String usn, String name, String branch, String phone) {   // constructor with parameters
+        this.usn = usn;                              // this.usn = the field, usn = the parameter
+        this.name = name;
+        this.branch = branch;
+        this.phone = phone;
+    }
+
+    void display() {                                 // prints one student's row
+        System.out.printf("%-14s%-16s%-10s%-12s%n", usn, name, branch, phone);
+    }
+}
 class StudentDemo {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -35,20 +52,3 @@ class StudentDemo {
     }
 }
 
-class Student {
-    String usn;                                      // instance variables: every Student has its own copy
-    String name;
-    String branch;
-    String phone;
-
-    Student(String usn, String name, String branch, String phone) {   // constructor with parameters
-        this.usn = usn;                              // this.usn = the field, usn = the parameter
-        this.name = name;
-        this.branch = branch;
-        this.phone = phone;
-    }
-
-    void display() {                                 // prints one student's row
-        System.out.printf("%-14s%-16s%-10s%-12s%n", usn, name, branch, phone);
-    }
-}

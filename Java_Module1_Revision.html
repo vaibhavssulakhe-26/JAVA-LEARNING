@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#02030a">
+<title>Java Module 1 Revision | 1BCS302 OOP with Java</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#02030a; --panel:#060916; --panel2:#0a0f22; --line:#16203d;
+  --ink:#d9e0f2; --dim:#8590b3; --white:#f3f8ff;
+  --cyan:#19f0ff; --mag:#ff3df2; --lime:#7dff6b; --amber:#ffb627; --violet:#9a8cff; --red:#ff5575;
+  --head:"Chakra Petch","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Code",Consolas,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+/* deep-space backdrop: nebula glows + two star layers, fixed behind everything */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 8% -5%, rgba(25,240,255,.10), transparent 60%),
+    radial-gradient(800px 700px at 105% 10%, rgba(255,61,242,.09), transparent 60%),
+    radial-gradient(900px 700px at 60% 115%, rgba(154,140,255,.09), transparent 60%),
+    var(--bg);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.9;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, #fff, transparent 60%),
+    radial-gradient(1px 1px at 31% 72%, #cfe9ff, transparent 60%),
+    radial-gradient(1.4px 1.4px at 57% 33%, #fff, transparent 60%),
+    radial-gradient(1px 1px at 78% 86%, #ffd8fb, transparent 60%),
+    radial-gradient(1.2px 1.2px at 91% 41%, #d6fcff, transparent 60%),
+    radial-gradient(1px 1px at 44% 9%, #fff, transparent 60%),
+    radial-gradient(1px 1px at 66% 61%, #fff, transparent 60%),
+    radial-gradient(1.3px 1.3px at 6% 88%, #fff, transparent 60%);
+  background-size:520px 520px;
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:3px}
+
+/* ---------- layout ---------- */
+.side{
+  position:fixed;left:0;top:0;bottom:0;width:272px;padding:22px 16px 22px 22px;overflow-y:auto;
+  border-right:1px solid var(--line);background:rgba(2,3,10,.82);backdrop-filter:blur(6px);z-index:20;
+}
+.side .brand{font:600 15px/1.3 var(--head);color:var(--white);letter-spacing:.02em;margin:0 0 4px;
+  text-shadow:0 0 10px rgba(25,240,255,.7)}
+.side .sub{font-size:12.5px;color:var(--dim);margin:0 0 16px}
+.side nav a{
+  display:block;padding:6px 10px;margin:1px 0;border-left:2px solid transparent;color:#b6c0de;font-size:14.5px;line-height:1.35;
+}
+.side nav a:hover{color:var(--white);text-decoration:none}
+.side nav a.on{color:var(--cyan);border-left-color:var(--cyan);background:linear-gradient(90deg,rgba(25,240,255,.12),transparent);
+  text-shadow:0 0 8px rgba(25,240,255,.6)}
+.side nav .grp{margin:14px 0 4px 10px;font-size:12.5px;color:var(--violet);font-weight:600}
+main{margin-left:272px;padding:0 clamp(18px,4vw,56px) 120px}
+.wrap{max-width:860px;margin:0 auto}
+.menu-btn{display:none}
+
+/* ---------- headings (neon) ---------- */
+h1,h2,h3,h4{font-family:var(--head);margin:0;font-weight:600}
+h1{
+  font-size:clamp(40px,7.4vw,84px);line-height:1.02;font-weight:700;color:#eaffff;letter-spacing:.005em;
+  text-shadow:0 0 5px rgba(25,240,255,.95),0 0 16px rgba(25,240,255,.7),0 0 38px rgba(25,240,255,.5),0 0 90px rgba(25,240,255,.3);
+  animation:tube 1.5s ease-out 1;
+}
+@keyframes tube{
+  0%{opacity:.15;text-shadow:none} 8%{opacity:1} 11%{opacity:.25} 16%{opacity:1} 20%{opacity:.5}
+  26%,100%{opacity:1}
+}
+h2{
+  font-size:clamp(28px,4vw,38px);line-height:1.15;color:#e4feff;margin-top:84px;padding-bottom:12px;
+  text-shadow:0 0 6px rgba(25,240,255,.85),0 0 20px rgba(25,240,255,.5),0 0 44px rgba(25,240,255,.25);
+  border-bottom:1px solid transparent;
+  border-image:linear-gradient(90deg,rgba(25,240,255,.8),rgba(255,61,242,.5),transparent 85%) 1;
+}
+h3{
+  font-size:22px;line-height:1.25;color:#ffd3fb;margin-top:40px;
+  text-shadow:0 0 6px rgba(255,61,242,.8),0 0 18px rgba(255,61,242,.4);
+}
+h4{
+  font-size:17px;color:#d7ffd0;margin-top:26px;
+  text-shadow:0 0 6px rgba(125,255,107,.6),0 0 16px rgba(125,255,107,.25);
+}
+p{margin:12px 0}
+ul,ol{margin:10px 0;padding-left:22px}
+li{margin:5px 0}
+li::marker{color:var(--cyan)}
+b,strong{color:var(--white);font-weight:600}
+code,.ic{font-family:var(--mono);font-size:.9em;color:#bff9ff;background:rgba(25,240,255,.08);border:1px solid rgba(25,240,255,.18);
+  padding:1px 6px;border-radius:5px;white-space:nowrap}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(48px,9vw,110px) 0 36px}
+.hero .course{font:500 14.5px var(--mono);color:var(--violet);margin:0 0 18px}
+.hero .tag{font:500 clamp(18px,2.4vw,24px)/1.4 var(--head);color:#ffc2fa;margin:22px 0 0;
+  text-shadow:0 0 8px rgba(255,61,242,.65),0 0 24px rgba(255,61,242,.3)}
+.hero .lede{max-width:640px;color:#aab4d4;margin:18px 0 0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0}
+.btn{
+  font:500 14px var(--body);color:var(--cyan);background:rgba(25,240,255,.06);border:1px solid rgba(25,240,255,.45);
+  padding:8px 16px;border-radius:999px;cursor:pointer;box-shadow:0 0 14px rgba(25,240,255,.12) inset;
+}
+.btn:hover{background:rgba(25,240,255,.14);box-shadow:0 0 16px rgba(25,240,255,.35)}
+.btn[aria-pressed="true"]{color:#04121a;background:var(--cyan);box-shadow:0 0 22px rgba(25,240,255,.6)}
+
+/* syllabus checklist */
+.mission{margin-top:44px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(10,15,34,.92),rgba(6,9,22,.92));
+  border-radius:14px;padding:22px 24px 14px;box-shadow:0 0 40px rgba(154,140,255,.07)}
+.mission h3{margin:0 0 4px;font-size:21px}
+.bar{height:7px;border-radius:999px;background:#0e1530;overflow:hidden;margin:12px 0 18px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--mag));box-shadow:0 0 14px var(--cyan);transition:width .35s}
+.check{list-style:none;padding:0;margin:0;columns:2;column-gap:28px}
+.check li{break-inside:avoid;margin:0 0 9px;display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.check input{appearance:none;-webkit-appearance:none;flex:none;width:18px;height:18px;margin-top:2px;border:1.5px solid var(--violet);border-radius:5px;background:transparent;cursor:pointer;position:relative}
+.check input:checked{background:var(--lime);border-color:var(--lime);box-shadow:0 0 10px rgba(125,255,107,.6)}
+.check input:checked::after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;border:solid #04120a;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.check a{color:#c9d3ef}
+.check input:checked + a{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(125,255,107,.5)}
+.syl{margin:22px 0 6px;border-left:3px solid var(--violet);padding:4px 0 4px 16px;color:#aeb8d8;font-size:14.5px;line-height:1.6}
+.syl b{color:#d9d3ff}
+.syl p{margin:8px 0}
+
+/* ---------- callouts ---------- */
+.def,.exam,.trap,.note{margin:20px 0;padding:14px 18px;border-radius:10px;font-size:15.5px;line-height:1.65}
+.def{border-left:4px solid var(--mag);background:linear-gradient(90deg,rgba(255,61,242,.12),rgba(255,61,242,.02));box-shadow:0 0 24px rgba(255,61,242,.08)}
+.def > b:first-child{color:#ffb3f8;text-shadow:0 0 8px rgba(255,61,242,.6)}
+.exam{border:1.5px dashed rgba(255,182,39,.65);background:rgba(255,182,39,.05)}
+.exam h4{margin:0 0 6px;color:#ffe2a6;font-size:16.5px;text-shadow:0 0 8px rgba(255,182,39,.55)}
+.exam ul{margin:6px 0 2px}
+.exam li::marker{color:var(--amber)}
+.trap{border-left:4px solid var(--red);background:linear-gradient(90deg,rgba(255,85,117,.12),rgba(255,85,117,.02))}
+.trap > b:first-child{color:#ffb0bf;text-shadow:0 0 8px rgba(255,85,117,.6)}
+.note{border-left:4px solid var(--cyan);background:linear-gradient(90deg,rgba(25,240,255,.09),rgba(25,240,255,.01))}
+.note > b:first-child{color:#aef8ff}
+.def p:first-child,.note p:first-child,.trap p:first-child{margin-top:0}
+.def p:last-child,.note p:last-child,.trap p:last-child{margin-bottom:0}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:10px;background:rgba(6,9,22,.7)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:420px}
+th,td{padding:9px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #121a35}
+th{font:600 14.5px var(--head);color:#bff9ff;background:rgba(25,240,255,.07);text-shadow:0 0 8px rgba(25,240,255,.45);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:rgba(154,140,255,.06)}
+td code{white-space:normal}
+
+/* ---------- flow diagrams ---------- */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin:20px 0}
+.flow .node{flex:1 1 150px;border:1px solid rgba(25,240,255,.45);border-radius:10px;padding:10px 14px;background:rgba(25,240,255,.05);
+  color:var(--white);font-weight:600;box-shadow:0 0 18px rgba(25,240,255,.1) inset}
+.flow .node small{display:block;font-weight:400;color:var(--dim);font-size:13px;margin-top:2px}
+.flow .arrow{align-self:center;color:var(--mag);font:600 14px var(--mono);text-shadow:0 0 8px rgba(255,61,242,.8);padding:0 2px}
+.tree{font-family:var(--mono);font-size:14.5px;line-height:1.7;color:#cfd8f3;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;white-space:pre;overflow-x:auto}
+
+/* ---------- code ---------- */
+.prog{margin:26px 0}
+.prog > .ptitle{font:600 15.5px var(--head);color:#ffd3fb;margin:0 0 8px;text-shadow:0 0 8px rgba(255,61,242,.45)}
+figure.code{margin:0;border:1px solid rgba(25,240,255,.3);border-radius:10px 10px 0 0;background:#04060f;box-shadow:0 0 28px rgba(25,240,255,.07)}
+figure.code.bad{border-color:rgba(255,85,117,.55);box-shadow:0 0 28px rgba(255,85,117,.08)}
+figure.code.solo{border-radius:10px;margin:20px 0}
+figure.code figcaption{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-bottom:1px solid var(--line);
+  font:500 13px var(--mono);color:var(--dim);background:rgba(25,240,255,.04);border-radius:10px 10px 0 0}
+figure.code .fn{color:#9fdcff}
+figure.code.bad .fn{color:#ff9fb2}
+.copy{font:500 12px var(--body);color:var(--cyan);background:transparent;border:1px solid rgba(25,240,255,.4);border-radius:6px;padding:2px 10px;cursor:pointer}
+.copy:hover{background:rgba(25,240,255,.14)}
+pre{margin:0;font-family:var(--mono);font-size:13.5px;line-height:1.62;overflow-x:auto;tab-size:4}
+figure.code pre{padding:14px 16px;color:#d4dcf3}
+figure.code code{background:none;border:0;padding:0;color:inherit;font-size:inherit;white-space:pre}
+.k{color:#ff6cf5}.t{color:#4fe9ff}.s{color:#8dff7a}.n{color:#ffc65a}.c{color:#6b7aa6;font-style:italic}
+.out{border:1px solid rgba(125,255,107,.35);border-top:0;border-radius:0 0 10px 10px;background:#030a07}
+.out .oh{padding:6px 12px;font:600 13px var(--head);color:#cfffc7;border-bottom:1px solid rgba(125,255,107,.18);
+  text-shadow:0 0 8px rgba(125,255,107,.6);display:flex;justify-content:space-between;gap:10px}
+.out .oh em{font:400 12px var(--body);color:#6f9d68;font-style:normal;display:none}
+.out pre{padding:12px 16px;color:#a9ff9b;text-shadow:0 0 6px rgba(125,255,107,.25)}
+body.hide-out .out pre:not(.rev){filter:blur(8px);cursor:pointer;user-select:none}
+body.hide-out .out .oh em{display:inline}
+body.hide-out .out pre.rev{filter:none}
+
+/* ---------- misc ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips span{font:500 13.5px var(--mono);color:#e8d9ff;border:1px solid rgba(154,140,255,.5);border-radius:6px;padding:3px 9px;background:rgba(154,140,255,.08)}
+hr{border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(25,240,255,.4),transparent);margin:48px 0}
+.top{position:fixed;right:18px;bottom:18px;z-index:30;width:42px;height:42px;border-radius:50%;border:1px solid rgba(25,240,255,.55);
+  background:rgba(2,3,10,.9);color:var(--cyan);font-size:18px;cursor:pointer;box-shadow:0 0 18px rgba(25,240,255,.3)}
+footer{margin-top:90px;color:var(--dim);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+
+@media (max-width:980px){
+  .side{transform:translateX(-102%);transition:transform .25s;width:min(300px,86vw);background:rgba(2,3,10,.97)}
+  .side.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.8)}
+  main{margin-left:0}
+  .menu-btn{display:block;position:fixed;left:14px;top:14px;z-index:40;font:500 14px var(--body);color:var(--cyan);
+    background:rgba(2,3,10,.92);border:1px solid rgba(25,240,255,.55);border-radius:999px;padding:7px 16px;box-shadow:0 0 16px rgba(25,240,255,.25)}
+  .hero{padding-top:84px}
+  .check{columns:1}
+  .two{grid-template-columns:1fr}
+  :not(pre) > code{white-space:normal;overflow-wrap:anywhere}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto} h1{animation:none} .bar i{transition:none} .side{transition:none}
+}
+@media print{
+  body{background:#fff;color:#111;font-size:12pt} body::before,body::after{display:none}
+  .side,.menu-btn,.top,.tools,.copy{display:none!important} main{margin:0;padding:0}
+  h1,h2,h3,h4{color:#000!important;text-shadow:none!important;border-image:none} h2{border-bottom:2px solid #222}
+  figure.code,.out,.mission,.def,.exam,.trap,.note,.tw{background:#fff!important;box-shadow:none!important;border-color:#888!important}
+  figure.code pre,.out pre{color:#111!important;text-shadow:none!important}
+  .k{color:#a0008f}.t{color:#00607a}.s{color:#1c7a10}.n{color:#a05a00}.c{color:#666}
+  code,.ic{color:#003b4a;background:#eef}
+  th{color:#000;background:#eee;text-shadow:none} body.hide-out .out pre{filter:none!important}
+  .prog,figure.code,.out{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">Contents</button>
+
+<aside class="side" id="side">
+  <p class="brand">Java Module 1</p>
+  <p class="sub">1BCS302 OOP with Java, VTU Scheme 2025</p>
+  <nav id="nav">
+    <a href="#top">Syllabus and checklist</a>
+    <div class="grp">Overview of Java</div>
+    <a href="#overview">Features, WORA, JDK/JRE/JVM</a>
+    <a href="#oop">OOP concepts, class, object</a>
+    <a href="#lexical">Lexical issues</a>
+    <div class="grp">Data types, variables, arrays</div>
+    <a href="#primitives">Primitive types</a>
+    <a href="#variables">Variables, scope, lifetime</a>
+    <a href="#basic">Basic programs</a>
+    <a href="#conversion">Conversion, casting, promotion</a>
+    <a href="#arrays">Arrays</a>
+    <div class="grp">Operators</div>
+    <a href="#operators">All operators</a>
+    <div class="grp">Control statements</div>
+    <a href="#control">Overview</a>
+    <a href="#selection">Selection</a>
+    <a href="#iteration">Iteration</a>
+    <a href="#jump">Jump</a>
+    <div class="grp">Last look</div>
+    <a href="#cheat">Traps and quick facts</a>
+  </nav>
+</aside>
+
+<main>
+<div class="wrap">
+
+<!-- ======================= HERO + SYLLABUS ======================= -->
+<header class="hero" id="top">
+  <p class="course">1BCS302 | Object Oriented Programming with Java | IPCC, 4 credits</p>
+  <h1>Module 1</h1>
+  <p class="tag">Java overview, data types, operators and control statements</p>
+  <p class="lede">Everything covered for the first internal, in syllabus order: definitions, syntax, programs with comments, and real outputs. Exam questions sit at the end of each topic.</p>
+  <div class="tools">
+    <button class="btn" id="hideOut" aria-pressed="false">Blur outputs to test yourself</button>
+    <button class="btn" id="printBtn">Print or save as PDF</button>
+  </div>
+
+  <div class="mission">
+    <h3>Syllabus checklist</h3>
+    <div class="bar"><i id="barFill"></i></div>
+    <ul class="check" id="checklist">
+      <li><input type="checkbox" id="c1"><a href="#oop">Object-oriented programming: two paradigms, abstraction, the three OOP principles</a></li>
+      <li><input type="checkbox" id="c2"><a href="#oop">Using blocks of code</a></li>
+      <li><input type="checkbox" id="c3"><a href="#lexical">Lexical issues: whitespace, identifiers, literals, comments, separators, keywords</a></li>
+      <li><input type="checkbox" id="c4"><a href="#primitives">Primitive types: integers, floating-point, characters, booleans</a></li>
+      <li><input type="checkbox" id="c5"><a href="#variables">Variables, dynamic initialization, scope and lifetime</a></li>
+      <li><input type="checkbox" id="c6"><a href="#conversion">Type conversion and casting</a></li>
+      <li><input type="checkbox" id="c7"><a href="#conversion">Automatic type promotion in expressions</a></li>
+      <li><input type="checkbox" id="c8"><a href="#arrays">Arrays: one-dimensional, two-dimensional, jagged</a></li>
+      <li><input type="checkbox" id="c9"><a href="#operators">Arithmetic, relational and boolean logical operators</a></li>
+      <li><input type="checkbox" id="c10"><a href="#operators">Assignment operator, the ? operator, precedence, parentheses</a></li>
+      <li><input type="checkbox" id="c11"><a href="#selection">Selection statements: if, traditional switch</a></li>
+      <li><input type="checkbox" id="c12"><a href="#iteration">Iteration: while, do-while, for, for-each, var in a for loop, nested loops</a></li>
+      <li><input type="checkbox" id="c13"><a href="#jump">Jump statements: break, continue, return</a></li>
+      <li><input type="checkbox" id="c14"><a href="#overview">Features of Java, WORA, JDK/JRE/JVM</a></li>
+    </ul>
+  </div>
+
+  <div class="syl">
+    <p><b>Syllabus text, Module 1 (Textbook chapters 2, 3, 4, 5; 9 hours)</b></p>
+    <p><b>An Overview of Java:</b> Object-Oriented Programming (Two Paradigms, Abstraction, The Three OOP Principles), Using Blocks of Code, Lexical Issues (Whitespace, Identifiers, Literals, Comments, Separators, The Java Keywords).</p>
+    <p><b>Data Types, Variables, and Arrays:</b> The Primitive Types (Integers, Floating-Point Types, Characters, Booleans), Variables, Type Conversion and Casting, Automatic Type Promotion in Expressions, Arrays.</p>
+    <p><b>Operators:</b> Arithmetic Operators, Relational Operators, Boolean Logical Operators, The Assignment Operator, The ? Operator, Operator Precedence, Using Parentheses.</p>
+    <p><b>Control Statements:</b> Java's Selection Statements (if, The Traditional switch), Iteration Statements (while, do-while, for, The For-Each Version of the for Loop, Local Variable Type Inference in a for Loop, Nested Loops), Jump Statements (Using break, Using continue, return).</p>
+  </div>
+</header>
+
+<!-- ======================= OVERVIEW ======================= -->
+<section id="overview">
+<h2>Overview of Java</h2>
+
+<h3>Features of Java</h3>
+<p>Ten features are enough for a 5 to 6 mark answer. Always include portable, robust and secure, and explain each in a line.</p>
+<div class="tw"><table>
+<thead><tr><th>Feature</th><th>What to write</th></tr></thead>
+<tbody>
+<tr><td>Simple</td><td>Easy to learn. Removes confusing C/C++ features: pointers, operator overloading, manual memory management.</td></tr>
+<tr><td>Object-oriented</td><td>Everything except primitives is an object. Supports encapsulation, inheritance and polymorphism.</td></tr>
+<tr><td>Robust</td><td>Strong type checking, exception handling and automatic <b>garbage collection</b> reduce crashes and memory errors.</td></tr>
+<tr><td>Secure</td><td>No explicit pointers. Bytecode is verified by the JVM, and code runs in a sandbox so a downloaded program cannot harm the system.</td></tr>
+<tr><td>Portable (architecture-neutral)</td><td>The same bytecode runs on any machine that has a JVM. This is WORA.</td></tr>
+<tr><td>Interpreted</td><td>Source is compiled to bytecode, which the JVM executes.</td></tr>
+<tr><td>High performance</td><td>The <b>JIT (Just-In-Time) compiler</b> converts frequently used bytecode into native machine code at run time.</td></tr>
+<tr><td>Multithreaded</td><td>Built-in support for running several tasks concurrently (Module 4).</td></tr>
+<tr><td>Distributed</td><td>Designed for networks. Supports TCP/IP and RMI.</td></tr>
+<tr><td>Dynamic</td><td>Classes are loaded at run time as needed, so programs adapt to a changing environment.</td></tr>
+</tbody></table></div>
+
+<h3>WORA: Write Once, Run Anywhere</h3>
+<div class="flow">
+  <div class="node">Hello.java<small>source code</small></div>
+  <div class="arrow">javac</div>
+  <div class="node">Hello.class<small>bytecode, platform independent</small></div>
+  <div class="arrow">JVM</div>
+  <div class="node">Output<small>on Windows, Linux or macOS. One JVM build per OS.</small></div>
+</div>
+<div class="def"><b>WORA.</b> <code>javac</code> compiles source code into bytecode (a <code>.class</code> file). The JVM on each platform then interprets or JIT-compiles that same bytecode into native instructions, so one compiled program runs on any operating system.</div>
+<div class="trap"><b>Trick question.</b> Bytecode is platform independent, but the JVM is platform dependent. Do not write that "the JVM is platform independent".</div>
+
+<h3>JDK, JRE and JVM</h3>
+<div class="tw"><table>
+<thead><tr><th>Name</th><th>Contains</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>JVM</td><td>The virtual machine</td><td>Executes <code>.class</code> bytecode. Platform specific.</td></tr>
+<tr><td>JRE</td><td>JVM plus the standard class libraries</td><td>Enough to <b>run</b> Java programs.</td></tr>
+<tr><td>JDK</td><td>JRE plus development tools (<code>javac</code>, debugger, <code>javadoc</code>)</td><td>Needed to <b>develop</b> Java programs.</td></tr>
+</tbody></table></div>
+<p>JDK contains JRE, and JRE contains JVM.</p>
+
+<h3>The first program</h3>
+<div class="prog"><p class="ptitle">Hello World</p><figure class="code"><figcaption><span class="fn">HelloWorld.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">public</span> <span class="k">class</span> <span class="t">HelloWorld</span> {                       <span class="c">// file name must be HelloWorld.java (matches the public class)</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {    <span class="c">// the JVM starts execution here</span>
+        <span class="t">System</span>.out.println(<span class="s">"Hello, World!"</span>);    <span class="c">// prints the text and moves to a new line</span>
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Hello, World!</pre></div></div>
+<div class="tw"><table>
+<thead><tr><th>Part</th><th>Why it is there</th></tr></thead>
+<tbody>
+<tr><td><code>public</code></td><td>The JVM must be able to call <code>main</code> from outside the class.</td></tr>
+<tr><td><code>static</code></td><td>The JVM calls <code>main</code> before any object exists, so it must be callable on the class itself without an object.</td></tr>
+<tr><td><code>void</code></td><td><code>main</code> returns nothing to the JVM.</td></tr>
+<tr><td><code>String[] args</code></td><td>Command-line arguments arrive here as an array of strings.</td></tr>
+<tr><td><code>class HelloWorld</code></td><td>A public class must be saved in a file with exactly the same name: <code>HelloWorld.java</code>.</td></tr>
+</tbody></table></div>
+<figure class="code solo"><figcaption><span class="fn">Compile and run (terminal)</span><button class="copy" type="button">Copy</button></figcaption><pre><code>javac <span class="t">HelloWorld</span>.java     <span class="c">// produces HelloWorld.class (bytecode)</span>
+java <span class="t">HelloWorld</span>           <span class="c">// the JVM runs the bytecode (no .class in this command)</span></code></pre></figure>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>List and explain any five features of Java.</li>
+<li>Explain WORA. How does Java achieve platform independence?</li>
+<li>Differentiate JDK, JRE and JVM.</li>
+<li>Why is <code>main</code> declared <code>public static void</code>?</li>
+</ul></div>
+</section>
+
+<!-- ======================= OOP ======================= -->
+<section id="oop">
+<h2>Object-Oriented Programming</h2>
+
+<h3>Two paradigms</h3>
+<div class="tw"><table>
+<thead><tr><th>Procedure-oriented (POP)</th><th>Object-oriented (OOP)</th></tr></thead>
+<tbody>
+<tr><td>Program is divided into <b>functions</b></td><td>Program is divided into <b>objects</b> (classes)</td></tr>
+<tr><td>Focus on the process, the sequence of steps: "code acting on data"</td><td>Focus on the data: "data controlling access to code"</td></tr>
+<tr><td>Top-down approach</td><td>Bottom-up approach</td></tr>
+<tr><td>Data is global and shared, so it is less secure</td><td>Data is hidden inside objects (encapsulation), so it is more secure</td></tr>
+<tr><td>Limited reuse</td><td>Reuse through inheritance</td></tr>
+<tr><td>No polymorphism</td><td>Supports polymorphism</td></tr>
+<tr><td>Hard to maintain as the program grows</td><td>Easy to maintain and extend</td></tr>
+<tr><td>C, Pascal, FORTRAN</td><td>Java, C++, Python</td></tr>
+</tbody></table></div>
+
+<h3>Abstraction</h3>
+<div class="def"><b>Abstraction.</b> Hiding the internal implementation details and showing only the essential features to the user. It manages complexity through hierarchical classification: you drive a car as one object without thinking about the thousands of parts inside it.</div>
+<p>How it helps manage complexity:</p>
+<ol>
+<li>Hides unnecessary detail, so the user works with a simple interface.</li>
+<li>Breaks a large system into levels. A car is made of engine, transmission and brakes, and the engine is made of its own parts. Each level is understood on its own.</li>
+<li>Reduces errors, because outside code cannot misuse hidden internals.</li>
+<li>Eases maintenance, because the implementation can change without affecting the code that uses it.</li>
+<li>In Java it is achieved with classes, abstract classes and interfaces (Module 3). Example: <code>Math.sqrt(25)</code> gives the result without showing the algorithm.</li>
+</ol>
+
+<h3>The three OOP principles</h3>
+<div class="def"><b>Encapsulation.</b> Binds code and the data it manipulates into one unit (the class) and keeps both safe from outside interference and misuse. Data is usually <code>private</code> and reached only through <code>public</code> methods, so the class acts as a black box.</div>
+<div class="def"><b>Inheritance.</b> The process by which one class acquires the properties and behaviour of another. It supports hierarchical classification and code reuse. The existing class is the superclass, and the new class is the subclass, written with <code>extends</code>.</div>
+<div class="def"><b>Polymorphism.</b> "One interface, multiple methods." The same method name performs different actions depending on context. Compile-time polymorphism is method overloading. Run-time polymorphism is method overriding.</div>
+<div class="prog"><p class="ptitle">All three principles in one program</p><figure class="code"><figcaption><span class="fn">OOPDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">OOPDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="c">// ----- 1. ENCAPSULATION -----</span>
+        <span class="t">Account</span> acc = <span class="k">new</span> <span class="t">Account</span>();
+        acc.deposit(<span class="n">500</span>);                       <span class="c">// data changes only through a controlled method</span>
+        acc.deposit(-<span class="n">100</span>);                      <span class="c">// rejected by the check inside deposit()</span>
+        <span class="c">// acc.balance = 99999;                 // compile error: balance is private</span>
+        <span class="t">System</span>.out.println(<span class="s">"Balance = "</span> + acc.getBalance());
+
+        <span class="c">// ----- 2. INHERITANCE -----</span>
+        <span class="t">Car</span> car = <span class="k">new</span> <span class="t">Car</span>();
+        <span class="t">System</span>.out.println(<span class="s">"Speed (inherited from Vehicle) = "</span> + car.speed);
+        car.honk();                             <span class="c">// method defined in Car itself</span>
+
+        <span class="c">// ----- 3. POLYMORPHISM -----</span>
+        <span class="c">// (a) compile-time: method OVERLOADING (same name, different parameters)</span>
+        <span class="t">Shape</span> s = <span class="k">new</span> <span class="t">Shape</span>();
+        <span class="t">System</span>.out.println(<span class="s">"Circle area = "</span> + s.area(<span class="n">2</span>));
+        <span class="t">System</span>.out.println(<span class="s">"Rectangle area = "</span> + s.area(<span class="n">3</span>, <span class="n">4</span>));
+
+        <span class="c">// (b) run-time: method OVERRIDING (subclass replaces the superclass version)</span>
+        <span class="t">Vehicle</span> v = <span class="k">new</span> <span class="t">Car</span>();                  <span class="c">// superclass reference holding a subclass object</span>
+        v.move();                               <span class="c">// the Car version runs</span>
+    }
+}
+
+<span class="k">class</span> <span class="t">Account</span> {
+    <span class="k">private</span> <span class="t">double</span> balance;                     <span class="c">// hidden data</span>
+    <span class="t">void</span> deposit(<span class="t">double</span> amt) {
+        <span class="k">if</span> (amt &gt; <span class="n">0</span>)                            <span class="c">// validation protects the data</span>
+            balance += amt;
+    }
+    <span class="t">double</span> getBalance() { <span class="k">return</span> balance; }
+}
+
+<span class="k">class</span> <span class="t">Vehicle</span> {
+    <span class="t">int</span> speed = <span class="n">60</span>;
+    <span class="t">void</span> move() { <span class="t">System</span>.out.println(<span class="s">"Vehicle is moving"</span>); }
+}
+
+<span class="k">class</span> <span class="t">Car</span> <span class="k">extends</span> <span class="t">Vehicle</span> {                     <span class="c">// Car inherits speed and move()</span>
+    <span class="t">void</span> honk() { <span class="t">System</span>.out.println(<span class="s">"Beep!"</span>); }
+    <span class="t">void</span> move() { <span class="t">System</span>.out.println(<span class="s">"Car is moving"</span>); }     <span class="c">// overrides Vehicle.move()</span>
+}
+
+<span class="k">class</span> <span class="t">Shape</span> {
+    <span class="t">double</span> area(<span class="t">int</span> r)        { <span class="k">return</span> <span class="n">3.14</span> * r * r; }       <span class="c">// circle</span>
+    <span class="t">double</span> area(<span class="t">int</span> l, <span class="t">int</span> b) { <span class="k">return</span> l * b; }              <span class="c">// rectangle (overloaded)</span>
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Balance = 500.0
+Speed (inherited from Vehicle) = 60
+Beep!
+Circle area = 12.56
+Rectangle area = 12.0
+Car is moving</pre></div></div>
+
+<h3>Using blocks of code</h3>
+<div class="def"><b>Block.</b> Statements enclosed in <code>{ }</code> treated as one unit. Used for method bodies, loop bodies and <code>if</code> bodies. A variable declared inside a block is local to it.</div>
+<figure class="code solo"><figcaption><span class="fn">A block creates a scope</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">if</span> (x &gt; <span class="n">0</span>) {                  <span class="c">// block starts</span>
+    <span class="t">int</span> y = x * <span class="n">2</span>;            <span class="c">// y exists only inside this block</span>
+    <span class="t">System</span>.out.println(y);
+}                             <span class="c">// block ends, y is gone</span></code></pre></figure>
+
+<h3>Class and object</h3>
+<div class="def"><b>Class.</b> A template (blueprint) that defines the data (fields) and the code (methods) that operate on that data. A class defines a new data type. An <b>object</b> is an instance of a class. A class is a logical construct, and an object is its physical existence in memory.</div>
+<figure class="code solo"><figcaption><span class="fn">General form of a class</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">ClassName</span> {
+    <span class="c">// instance variables (data)</span>
+    type var1;
+    type var2;
+
+    <span class="c">// methods (code)</span>
+    type method1(parameters) {
+        <span class="c">// body</span>
+    }
+}</code></pre></figure>
+<div class="prog"><p class="ptitle">A class and an object</p><figure class="code"><figcaption><span class="fn">BoxDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">BoxDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">Box</span> b = <span class="k">new</span> <span class="t">Box</span>();                      <span class="c">// creating an object with new</span>
+        b.width = <span class="n">10</span>;                           <span class="c">// access fields with the dot operator</span>
+        b.height = <span class="n">20</span>;
+        b.depth = <span class="n">15</span>;
+        <span class="t">System</span>.out.println(<span class="s">"Volume = "</span> + b.volume());
+    }
+}
+
+<span class="k">class</span> <span class="t">Box</span> {
+    <span class="t">double</span> width, height, depth;                <span class="c">// instance variables (the data)</span>
+
+    <span class="t">double</span> volume() {                           <span class="c">// method (the code that works on the data)</span>
+        <span class="k">return</span> width * height * depth;
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Volume = 3000.0</pre></div></div>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the three OOP principles with examples (6 to 8 marks). Define each in 2 or 3 lines and add the code example.</li>
+<li>Differentiate procedure-oriented and object-oriented programming. Write at least five points.</li>
+<li>What is abstraction? How does it help manage complexity?</li>
+<li>What is a class? Explain its general form with an example.</li>
+</ul></div>
+</section>
+
+<!-- ======================= LEXICAL ======================= -->
+<section id="lexical">
+<h2>Lexical Issues</h2>
+<p>A Java program is made of whitespace, identifiers, literals, comments, operators, separators and keywords.</p>
+
+<h3>Whitespace</h3>
+<p>Java is a free-form language, so there are no indentation rules. Whitespace means a space, tab, newline or form feed. At least one whitespace character is needed between two tokens that are not already separated by an operator or separator.</p>
+<figure class="code solo"><figcaption><span class="fn">Whitespace</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="t">int</span> a=<span class="n">5</span>;            <span class="c">// valid</span>
+<span class="t">int</span>      a  =   <span class="n">5</span> ; <span class="c">// also valid</span>
+<span class="c">// intx=5;          // invalid: "int" and "x" need whitespace between them</span></code></pre></figure>
+
+<h3>Identifiers</h3>
+<div class="def"><b>Identifier.</b> The name given to a class, method, variable, interface and so on.</div>
+<p>Rules: letters, digits, underscore and dollar sign only. It must not begin with a digit, it is case-sensitive, it cannot be a keyword, and it cannot contain spaces or symbols such as <code>-</code> or <code>@</code>.</p>
+<div class="tw"><table>
+<thead><tr><th>Valid</th><th>Invalid</th><th>Why it is invalid</th></tr></thead>
+<tbody>
+<tr><td><code>AvgTemp</code>, <code>count</code>, <code>a4</code></td><td><code>2count</code></td><td>starts with a digit</td></tr>
+<tr><td><code>$test</code>, <code>this_is_ok</code></td><td><code>high-temp</code></td><td>contains <code>-</code></td></tr>
+<tr><td><code>_value</code></td><td><code>class</code></td><td>it is a keyword</td></tr>
+<tr><td></td><td><code>Not/ok</code></td><td>contains <code>/</code></td></tr>
+</tbody></table></div>
+<p>Convention, not a rule: classes start with an uppercase letter (<code>Student</code>), methods and variables with lowercase (<code>getName</code>), constants are all caps (<code>MAX_SIZE</code>).</p>
+
+<h3>Literals</h3>
+<div class="def"><b>Literal.</b> A fixed value written directly in the source code. Also called a constant.</div>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Examples and rules</th></tr></thead>
+<tbody>
+<tr><td>Integer</td><td><code>100</code> decimal, <code>017</code> octal (leading 0, value 15), <code>0xFF</code> hex (255), <code>0b1010</code> binary (10). Default type is <code>int</code>. A <code>long</code> needs the <code>L</code> suffix. Underscores are allowed: <code>1_000_000</code>.</td></tr>
+<tr><td>Floating-point</td><td><code>98.6</code>, <code>6.022E23</code>. Default type is <code>double</code>. A <code>float</code> needs the <code>f</code> suffix: <code>3.14f</code>.</td></tr>
+<tr><td>Boolean</td><td><code>true</code> and <code>false</code> only. They are not numbers.</td></tr>
+<tr><td>Character</td><td>One character in single quotes: <code>'A'</code>, <code>'7'</code>, <code>'\u0041'</code>.</td></tr>
+<tr><td>String</td><td>Characters in double quotes: <code>"Hello"</code>. Must start and end on the same line. A String is an object, not a primitive.</td></tr>
+<tr><td>Null</td><td><code>null</code> means "refers to no object". Only for reference variables.</td></tr>
+</tbody></table></div>
+<div class="tw"><table>
+<thead><tr><th>Escape</th><th>Meaning</th><th>Escape</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>\n</code></td><td>newline</td><td><code>\'</code></td><td>single quote</td></tr>
+<tr><td><code>\t</code></td><td>tab</td><td><code>\"</code></td><td>double quote</td></tr>
+<tr><td><code>\r</code></td><td>carriage return</td><td><code>\\</code></td><td>backslash</td></tr>
+<tr><td><code>\b</code></td><td>backspace</td><td><code>\uxxxx</code></td><td>Unicode character (hex)</td></tr>
+<tr><td><code>\f</code></td><td>form feed</td><td><code>\ddd</code></td><td>octal character</td></tr>
+</tbody></table></div>
+<div class="prog"><p class="ptitle">Literals in one program</p><figure class="code"><figcaption><span class="fn">LiteralDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">LiteralDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span> dec = <span class="n">100</span>;                          <span class="c">// decimal</span>
+        <span class="t">int</span> oct = <span class="n">017</span>;                          <span class="c">// octal (leading 0)   = 15</span>
+        <span class="t">int</span> hex = <span class="n">0xFF</span>;                         <span class="c">// hexadecimal (0x)    = 255</span>
+        <span class="t">int</span> bin = <span class="n">0b1010</span>;                       <span class="c">// binary (0b)         = 10</span>
+        <span class="t">long</span> big = <span class="n">10000000000L</span>;                <span class="c">// long needs the L suffix</span>
+        <span class="t">int</span> million = <span class="n">1_000_000</span>;                <span class="c">// underscores for readability</span>
+
+        <span class="t">double</span> d = <span class="n">6.022E23</span>;                    <span class="c">// scientific notation</span>
+        <span class="t">float</span> f = <span class="n">3.14f</span>;                        <span class="c">// float needs the f suffix</span>
+
+        <span class="t">boolean</span> flag = <span class="k">true</span>;                    <span class="c">// boolean literal</span>
+        <span class="t">char</span> c1 = <span class="s">'A'</span>;                          <span class="c">// character literal</span>
+        <span class="t">char</span> c2 = <span class="s">'\u0041'</span>;                     <span class="c">// Unicode escape, also 'A'</span>
+        <span class="t">String</span> s = <span class="s">"She said \"Hi\"\nNew line here"</span>;   <span class="c">// string literal with escape sequences</span>
+
+        <span class="t">System</span>.out.println(dec + <span class="s">" "</span> + oct + <span class="s">" "</span> + hex + <span class="s">" "</span> + bin);
+        <span class="t">System</span>.out.println(big + <span class="s">" "</span> + million);
+        <span class="t">System</span>.out.println(d + <span class="s">" "</span> + f);
+        <span class="t">System</span>.out.println(flag + <span class="s">" "</span> + c1 + <span class="s">" "</span> + c2);
+        <span class="t">System</span>.out.println(s);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">100 15 255 10
+10000000000 1000000
+6.022E23 3.14
+true A A
+She said "Hi"
+New line here</pre></div></div>
+
+<h3>Comments</h3>
+<figure class="code solo"><figcaption><span class="fn">The three types of comments</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="c">// 1. Single-line comment: runs to the end of the line</span>
+
+<span class="c">/* 2. Multi-line comment:
+      everything between the markers is ignored */</span>
+
+<span class="c">/** 3. Documentation comment: used by the javadoc tool
+ *  to generate HTML documentation automatically */</span></code></pre></figure>
+<p>Comments are ignored by the compiler. Multi-line comments cannot be nested.</p>
+
+<h3>Separators</h3>
+<div class="tw"><table>
+<thead><tr><th>Symbol</th><th>Name</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td><code>( )</code></td><td>Parentheses</td><td>Method parameters, expressions, control statements</td></tr>
+<tr><td><code>{ }</code></td><td>Braces</td><td>Blocks of code, class bodies, array initializers</td></tr>
+<tr><td><code>[ ]</code></td><td>Brackets</td><td>Array declaration and indexing</td></tr>
+<tr><td><code>;</code></td><td>Semicolon</td><td>Terminates a statement</td></tr>
+<tr><td><code>,</code></td><td>Comma</td><td>Separates variables in a declaration or parameters in a list</td></tr>
+<tr><td><code>.</code></td><td>Period</td><td>Separates package names from classes, or reaches a member of an object (<code>System.out</code>)</td></tr>
+</tbody></table></div>
+
+<h3>Java keywords</h3>
+<div class="def"><b>Keyword.</b> A reserved word with a predefined meaning. It cannot be used as an identifier. All keywords are lowercase.</div>
+<div class="chips">
+<span>abstract</span><span>assert</span><span>boolean</span><span>break</span><span>byte</span><span>case</span><span>catch</span><span>char</span><span>class</span><span>const</span><span>continue</span><span>default</span><span>do</span><span>double</span><span>else</span><span>enum</span><span>extends</span><span>final</span><span>finally</span><span>float</span><span>for</span><span>goto</span><span>if</span><span>implements</span><span>import</span><span>instanceof</span><span>int</span><span>interface</span><span>long</span><span>native</span><span>new</span><span>package</span><span>private</span><span>protected</span><span>public</span><span>return</span><span>short</span><span>static</span><span>strictfp</span><span>super</span><span>switch</span><span>synchronized</span><span>this</span><span>throw</span><span>throws</span><span>transient</span><span>try</span><span>void</span><span>volatile</span><span>while</span>
+</div>
+<ul>
+<li><code>const</code> and <code>goto</code> are reserved but not used in Java.</li>
+<li><code>true</code>, <code>false</code> and <code>null</code> are reserved literals, not keywords, but still cannot be identifiers.</li>
+</ul>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>What are identifiers? Give the naming rules with valid and invalid examples.</li>
+<li>Explain the three types of comments with examples.</li>
+<li>Write short notes on literals, separators and keywords (2 to 3 marks each).</li>
+<li>Which are valid identifiers: <code>2value</code>, <code>_total</code>, <code>my var</code>, <code>$cost</code>, <code>int</code>? Answer: only <code>_total</code> and <code>$cost</code>.</li>
+</ul></div>
+</section>
+
+<!-- ======================= PRIMITIVES ======================= -->
+<section id="primitives">
+<h2>Primitive Types</h2>
+<p>Java is strongly typed: every variable and expression has a type, and the compiler checks compatibility. There are 8 primitive types in four groups. Everything else (arrays, strings, classes) is a reference type.</p>
+
+<h3>Range formula</h3>
+<div class="def"><b>Signed integer with n bits:</b> range is <code>-2^(n-1)</code> to <code>2^(n-1) - 1</code>. One bit is the sign, so the negative side goes one further. The unsigned <code>char</code> uses <code>0</code> to <code>2^n - 1</code>.</div>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Bits</th><th>Calculation</th><th>Range</th></tr></thead>
+<tbody>
+<tr><td><code>byte</code></td><td>8</td><td>-2^7 to 2^7 - 1</td><td>-128 to 127</td></tr>
+<tr><td><code>short</code></td><td>16</td><td>-2^15 to 2^15 - 1</td><td>-32,768 to 32,767</td></tr>
+<tr><td><code>int</code></td><td>32</td><td>-2^31 to 2^31 - 1</td><td>-2,147,483,648 to 2,147,483,647</td></tr>
+<tr><td><code>long</code></td><td>64</td><td>-2^63 to 2^63 - 1</td><td>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td></tr>
+<tr><td><code>char</code></td><td>16</td><td>0 to 2^16 - 1</td><td>0 to 65,535 (unsigned)</td></tr>
+</tbody></table></div>
+
+<h3>Integers: byte, short, int, long</h3>
+<ul>
+<li>All are signed. Java has no <code>unsigned</code> keyword. Negative numbers are stored in two's complement.</li>
+<li><code>byte</code>: smallest. Used for raw binary data and file or network streams.</li>
+<li><code>short</code>: rarely used.</li>
+<li><code>int</code>: the most common. Integer literals are <code>int</code> by default. Used for loop counters and array indexes.</li>
+<li><code>long</code>: for very large values. Literals need the <code>L</code> suffix.</li>
+</ul>
+
+<h3>Floating-point: float, double</h3>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Bits</th><th>Approximate range</th><th>Precision</th></tr></thead>
+<tbody>
+<tr><td><code>float</code></td><td>32</td><td>1.4e-045 to 3.4e+038</td><td>single, about 6 to 7 digits</td></tr>
+<tr><td><code>double</code></td><td>64</td><td>4.9e-324 to 1.8e+308</td><td>double, about 15 digits</td></tr>
+</tbody></table></div>
+<p>Decimal literals are <code>double</code> by default, so a float needs <code>f</code>: <code>3.14f</code>. All <code>Math</code> methods (<code>sqrt</code>, <code>pow</code>, <code>sin</code>) work with <code>double</code>.</p>
+
+<h3>Character: char</h3>
+<ul>
+<li>16 bits, because Java uses <b>Unicode</b> to cover the characters of all human languages. C uses 8-bit ASCII.</li>
+<li>It behaves like an integer underneath, so arithmetic works on it.</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th>Characters</th><th>Unicode / ASCII values</th></tr></thead>
+<tbody>
+<tr><td><code>'0'</code> to <code>'9'</code></td><td>48 to 57</td></tr>
+<tr><td><code>'A'</code> to <code>'Z'</code></td><td>65 to 90</td></tr>
+<tr><td><code>'a'</code> to <code>'z'</code></td><td>97 to 122</td></tr>
+<tr><td>space</td><td>32</td></tr>
+</tbody></table></div>
+<p>Lowercase equals uppercase plus 32. The first 128 Unicode values are identical to ASCII.</p>
+<div class="prog"><p class="ptitle">Characters as numbers</p><figure class="code"><figcaption><span class="fn">CharValues.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">CharValues</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">char</span> c = <span class="s">'A'</span>;
+        <span class="t">int</span> n = c;                              <span class="c">// widening char -&gt; int gives the Unicode value</span>
+        <span class="t">System</span>.out.println(n);                  <span class="c">// 65</span>
+
+        <span class="t">System</span>.out.println(c + <span class="n">1</span>);              <span class="c">// 66  (c is promoted to int, so the result is an int)</span>
+        <span class="t">System</span>.out.println((<span class="t">char</span>)(c + <span class="n">1</span>));      <span class="c">// B   (cast back to char)</span>
+        c++;                                    <span class="c">// ++ works on char directly: c is now 'B'</span>
+        <span class="t">System</span>.out.println(c);                  <span class="c">// B</span>
+
+        <span class="t">System</span>.out.println(<span class="s">'a'</span> - <span class="s">'A'</span>);          <span class="c">// 32  (lowercase = uppercase + 32)</span>
+        <span class="t">char</span> lower = <span class="s">'g'</span>;
+        <span class="t">char</span> upper = (<span class="t">char</span>)(lower - <span class="n">32</span>);        <span class="c">// convert to uppercase without a library method</span>
+        <span class="t">System</span>.out.println(upper);              <span class="c">// G</span>
+
+        <span class="t">char</span> digit = <span class="s">'7'</span>;
+        <span class="t">int</span> value = digit - <span class="s">'0'</span>;                <span class="c">// 55 - 48 = 7  (digit character to number)</span>
+        <span class="t">System</span>.out.println(value);
+
+        <span class="k">for</span> (<span class="t">char</span> ch = <span class="s">'A'</span>; ch &lt;= <span class="s">'E'</span>; ch++)    <span class="c">// a char can be a loop variable</span>
+            <span class="t">System</span>.out.println(ch + <span class="s">" = "</span> + (<span class="t">int</span>) ch);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">65
+66
+B
+B
+32
+G
+7
+A = 65
+B = 66
+C = 67
+D = 68
+E = 69</pre></div></div>
+
+<h3>Boolean</h3>
+<ul>
+<li>Only <code>true</code> or <code>false</code>. Its size is not precisely defined and depends on the JVM.</li>
+<li>It is the type returned by relational operators and required by conditions in <code>if</code>, <code>while</code> and <code>for</code>.</li>
+<li>It cannot be converted to or from an integer. <code>if (1)</code> and <code>boolean b = 0;</code> are compile errors.</li>
+</ul>
+
+<h3>Default values</h3>
+<p>These apply to instance and static variables only. Local variables get no default and must be initialized before use.</p>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Default</th></tr></thead>
+<tbody>
+<tr><td><code>byte</code>, <code>short</code>, <code>int</code></td><td><code>0</code></td></tr>
+<tr><td><code>long</code></td><td><code>0L</code></td></tr>
+<tr><td><code>float</code></td><td><code>0.0f</code></td></tr>
+<tr><td><code>double</code></td><td><code>0.0d</code></td></tr>
+<tr><td><code>char</code></td><td><code>'\u0000'</code></td></tr>
+<tr><td><code>boolean</code></td><td><code>false</code></td></tr>
+<tr><td>reference types</td><td><code>null</code></td></tr>
+</tbody></table></div>
+<div class="prog"><p class="ptitle">Print the limits of each type</p><figure class="code"><figcaption><span class="fn">RangeDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">RangeDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="c">// Each wrapper class stores the limits of its primitive type as constants.</span>
+        <span class="t">System</span>.out.println(<span class="s">"byte  : "</span> + <span class="t">Byte</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Byte</span>.<span class="t">MAX_VALUE</span>);
+        <span class="t">System</span>.out.println(<span class="s">"short : "</span> + <span class="t">Short</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Short</span>.<span class="t">MAX_VALUE</span>);
+        <span class="t">System</span>.out.println(<span class="s">"int   : "</span> + <span class="t">Integer</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Integer</span>.<span class="t">MAX_VALUE</span>);
+        <span class="t">System</span>.out.println(<span class="s">"long  : "</span> + <span class="t">Long</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Long</span>.<span class="t">MAX_VALUE</span>);
+        <span class="t">System</span>.out.println(<span class="s">"float : "</span> + <span class="t">Float</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Float</span>.<span class="t">MAX_VALUE</span>);
+        <span class="t">System</span>.out.println(<span class="s">"double: "</span> + <span class="t">Double</span>.<span class="t">MIN_VALUE</span> + <span class="s">" to "</span> + <span class="t">Double</span>.<span class="t">MAX_VALUE</span>);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">byte  : -128 to 127
+short : -32768 to 32767
+int   : -2147483648 to 2147483647
+long  : -9223372036854775808 to 9223372036854775807
+float : 1.4E-45 to 3.4028235E38
+double: 4.9E-324 to 1.7976931348623157E308</pre></div></div>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>List the primitive data types with size and range (5 to 6 marks). Add the range formula.</li>
+<li>Why is <code>char</code> 16 bits in Java? Unicode support.</li>
+<li>Differentiate <code>float</code> and <code>double</code>: size, precision, default literal type, the <code>f</code> suffix.</li>
+<li>Can a boolean hold 0 or 1 in Java? No. Java is strongly typed.</li>
+</ul></div>
+</section>
+
+<!-- ======================= VARIABLES ======================= -->
+<section id="variables">
+<h2>Variables, Scope and Lifetime</h2>
+
+<div class="def"><b>Variable.</b> The basic unit of storage in Java: a named memory location with a type, whose value can change while the program runs.</div>
+<figure class="code solo"><figcaption><span class="fn">Declaration form</span><button class="copy" type="button">Copy</button></figcaption><pre><code>type identifier [= value] [, identifier [= value] ...];
+
+<span class="t">int</span> a, b, c;            <span class="c">// three ints</span>
+<span class="t">int</span> d = <span class="n">3</span>, e, f = <span class="n">5</span>;    <span class="c">// declares three, initializes d and f</span>
+<span class="t">double</span> pi = <span class="n">3.14159</span>;
+<span class="t">char</span> x = <span class="s">'x'</span>;</code></pre></figure>
+<p>A local variable must be assigned a value before it is read, or the program does not compile. Unlike C, Java never lets you read an uninitialized local.</p>
+
+<h3>Dynamic initialization</h3>
+<div class="def"><b>Dynamic initialization.</b> Initializing a variable with an expression that is evaluated at run time, not just with a constant.</div>
+<div class="prog"><p class="ptitle">c is initialized by a computation</p><figure class="code"><figcaption><span class="fn">DynInit.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">DynInit</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">double</span> a = <span class="n">3.0</span>, b = <span class="n">4.0</span>;                <span class="c">// initialized with constants</span>
+
+        <span class="c">// c is initialized dynamically: its value comes from a computation at run time</span>
+        <span class="t">double</span> c = <span class="t">Math</span>.sqrt(a * a + b * b);
+
+        <span class="t">System</span>.out.println(<span class="s">"Hypotenuse is "</span> + c);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Hypotenuse is 5.0</pre></div></div>
+
+<h3>Scope</h3>
+<div class="def"><b>Scope.</b> The region of the program where a variable is visible and usable. A block defines a scope. The two main kinds are class scope and method scope.</div>
+<ol>
+<li>An inner block can access variables of the outer block.</li>
+<li>An outer block cannot access variables declared in an inner block.</li>
+<li>Java does not allow an inner-block variable to have the same name as one in an enclosing scope. C and C++ allow this (shadowing). Java does not.</li>
+</ol>
+<div class="prog"><p class="ptitle">Nested scope</p><figure class="code"><figcaption><span class="fn">ScopeDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">ScopeDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span> x;                                  <span class="c">// known to all code in main</span>
+        x = <span class="n">10</span>;
+
+        <span class="k">if</span> (x == <span class="n">10</span>) {                          <span class="c">// start of a new scope</span>
+            <span class="t">int</span> y = <span class="n">20</span>;                         <span class="c">// y is known only inside this block</span>
+            <span class="t">System</span>.out.println(<span class="s">"x and y: "</span> + x + <span class="s">" "</span> + y);   <span class="c">// x is visible here (outer scope)</span>
+            x = y * <span class="n">2</span>;
+        }
+        <span class="c">// y = 100;                             // ERROR: y is not known here (out of scope)</span>
+        <span class="t">System</span>.out.println(<span class="s">"x is "</span> + x);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">x and y: 10 20
+x is 40</pre></div></div>
+<figure class="code solo bad"><figcaption><span class="fn">The shadowing error (a favourite trick question)</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">ScopeErr</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span> bar = <span class="n">1</span>;
+        {                       <span class="c">// creates a new scope</span>
+            <span class="t">int</span> bar = <span class="n">2</span>;        <span class="c">// COMPILE-TIME ERROR: bar is already defined</span>
+        }
+    }
+}</code></pre></figure>
+
+<h3>Lifetime</h3>
+<div class="def"><b>Lifetime.</b> How long a variable exists in memory. A local variable is created when execution enters its scope and destroyed when it leaves, and its value is lost. A variable declared inside a loop is re-created and re-initialized on every iteration.</div>
+<div class="prog"><p class="ptitle">y is reset on every iteration</p><figure class="code"><figcaption><span class="fn">LifeTime.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">LifeTime</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span> x;
+        <span class="k">for</span> (x = <span class="n">0</span>; x &lt; <span class="n">3</span>; x++) {
+            <span class="t">int</span> y = -<span class="n">1</span>;                         <span class="c">// y is created and initialized on EVERY iteration</span>
+            <span class="t">System</span>.out.println(<span class="s">"y is: "</span> + y);   <span class="c">// always -1</span>
+            y = <span class="n">100</span>;
+            <span class="t">System</span>.out.println(<span class="s">"y is now: "</span> + y);
+        }                                       <span class="c">// y is destroyed here, and its value is lost</span>
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">y is: -1
+y is now: 100
+y is: -1
+y is now: 100
+y is: -1
+y is now: 100</pre></div></div>
+<div class="tw"><table>
+<thead><tr><th>Scope</th><th>Lifetime</th></tr></thead>
+<tbody><tr><td>Where a variable can be accessed</td><td>How long the variable exists</td></tr></tbody></table></div>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the scope and lifetime of variables with an example (6 marks). Define both, give the three nesting rules, and write ScopeDemo and LifeTime.</li>
+<li>What is dynamic initialization? Explain with an example.</li>
+<li>Will this code compile? (a redeclared variable in an inner block). No.</li>
+</ul></div>
+</section>
+
+<!-- ======================= BASIC PROGRAMS ======================= -->
+<section id="basic">
+<h2>Basic Programs</h2>
+<p>Three standard "write a program to..." questions. Each carries a concept examiners like to test.</p>
+
+<h3>Temperature conversion</h3>
+<div class="prog"><p class="ptitle">Fahrenheit to Celsius</p><figure class="code"><figcaption><span class="fn">TempConversion.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">TempConversion</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">double</span> fahrenheit = <span class="n">98.6</span>;
+        <span class="c">// 5.0 / 9.0 forces floating-point division. With 5 / 9 (two ints) the result is 0.</span>
+        <span class="t">double</span> celsius = <span class="n">5.0</span> / <span class="n">9.0</span> * (fahrenheit - <span class="n">32</span>);
+        <span class="t">System</span>.out.println(fahrenheit + <span class="s">" F = "</span> + celsius + <span class="s">" C"</span>);
+
+        <span class="t">System</span>.out.println(<span class="s">"5 / 9 = "</span> + (<span class="n">5</span> / <span class="n">9</span>));          <span class="c">// 0, integer division drops the fraction</span>
+        <span class="t">System</span>.out.println(<span class="s">"5.0 / 9 = "</span> + (<span class="n">5.0</span> / <span class="n">9</span>));      <span class="c">// 0.5555555555555556</span>
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">98.6 F = 37.0 C
+5 / 9 = 0
+5.0 / 9 = 0.5555555555555556</pre></div></div>
+<div class="trap"><b>The trap.</b> <code>5 / 9</code> with two ints is <code>0</code>, because integer division truncates. That would make every answer 0. Writing <code>5.0 / 9.0</code> forces floating-point division.</div>
+
+<h3>Distance light travels</h3>
+<div class="prog"><p class="ptitle">Distance in a number of days</p><figure class="code"><figcaption><span class="fn">Light.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">Light</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span> lightspeed;                         <span class="c">// miles per second</span>
+        <span class="t">long</span> days;
+        <span class="t">long</span> seconds;
+        <span class="t">long</span> distance;                          <span class="c">// long, because the answer is far beyond int's range</span>
+
+        lightspeed = <span class="n">186000</span>;
+        days = <span class="n">1000</span>;
+
+        seconds = days * <span class="n">24</span> * <span class="n">60</span> * <span class="n">60</span>;          <span class="c">// days -&gt; seconds</span>
+        distance = lightspeed * seconds;        <span class="c">// int * long is promoted to long</span>
+
+        <span class="t">System</span>.out.print(<span class="s">"In "</span> + days);
+        <span class="t">System</span>.out.print(<span class="s">" days light will travel about "</span>);
+        <span class="t">System</span>.out.println(distance + <span class="s">" miles."</span>);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">In 1000 days light will travel about 16070400000000 miles.</pre></div></div>
+<p>The answer, about 16 trillion, is far beyond <code>int</code>'s limit of about 2.1 billion. With <code>int</code> it would overflow silently and print a wrong number. This is the best example for "why do we have different integer types".</p>
+
+<h3>Boolean values and if-else</h3>
+<div class="prog"><p class="ptitle">boolean controls an if</p><figure class="code"><figcaption><span class="fn">BoolTest.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">BoolTest</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">boolean</span> b;
+
+        b = <span class="k">false</span>;
+        <span class="t">System</span>.out.println(<span class="s">"b is "</span> + b);            <span class="c">// prints true/false, not 1/0</span>
+
+        b = <span class="k">true</span>;
+        <span class="t">System</span>.out.println(<span class="s">"b is "</span> + b);
+
+        <span class="k">if</span> (b)                                      <span class="c">// a boolean controls the if directly</span>
+            <span class="t">System</span>.out.println(<span class="s">"This is executed."</span>);
+        <span class="k">else</span>
+            <span class="t">System</span>.out.println(<span class="s">"This is not executed."</span>);
+
+        b = <span class="k">false</span>;
+        <span class="k">if</span> (b)
+            <span class="t">System</span>.out.println(<span class="s">"This is executed."</span>);
+        <span class="k">else</span>
+            <span class="t">System</span>.out.println(<span class="s">"This is not executed."</span>);
+
+        <span class="c">// a relational operator produces a boolean; parentheses are needed because + binds tighter than &gt;</span>
+        <span class="t">System</span>.out.println(<span class="s">"10 &gt; 9 is "</span> + (<span class="n">10</span> &gt; <span class="n">9</span>));
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">b is false
+b is true
+This is executed.
+This is not executed.
+10 &gt; 9 is true</pre></div></div>
+<ul>
+<li><code>println</code> prints <code>true</code> or <code>false</code> for a boolean, not 1 or 0.</li>
+<li>Relational operators produce a boolean. The parentheses in <code>(10 &gt; 9)</code> are required, because <code>+</code> binds tighter than <code>&gt;</code>.</li>
+</ul>
+</section>
+
+<!-- ======================= CONVERSION ======================= -->
+<section id="conversion">
+<h2>Type Conversion, Casting and Promotion</h2>
+
+<h3>Automatic conversion (widening)</h3>
+<div class="def"><b>Automatic type conversion.</b> Java converts a value to another type automatically when (1) the two types are compatible, and (2) the destination type is larger than the source type.</div>
+<div class="flow">
+  <div class="node">byte</div><div class="arrow">to</div><div class="node">short</div><div class="arrow">to</div><div class="node">int</div><div class="arrow">to</div><div class="node">long</div><div class="arrow">to</div><div class="node">float</div><div class="arrow">to</div><div class="node">double</div>
+</div>
+<ul>
+<li><code>char</code> also widens to <code>int</code>.</li>
+<li>Numeric types are compatible with each other. Numeric types are not compatible with <code>char</code> or <code>boolean</code>, and those two are not compatible with each other.</li>
+<li>A literal that fits is assigned without a cast: <code>byte b = 10;</code></li>
+</ul>
+
+<h3>Casting (narrowing)</h3>
+<div class="def"><b>Casting.</b> Forcing a conversion when the destination is smaller than the source, or the types are not automatically compatible. Form: <code>(target-type) value</code></div>
+<ul>
+<li><b>Floating-point to integer:</b> the fractional part is truncated, not rounded. <code>(int) 9.7</code> is <code>9</code>.</li>
+<li><b>Integer to a smaller integer:</b> the value is reduced modulo the target's range. <code>(byte) 257</code> is <code>1</code>.</li>
+</ul>
+<div class="prog"><p class="ptitle">Widening and narrowing</p><figure class="code"><figcaption><span class="fn">Conversion.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">Conversion</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">byte</span> b;
+        <span class="t">int</span> i = <span class="n">257</span>;
+        <span class="t">double</span> d = <span class="n">323.142</span>;
+
+        <span class="t">System</span>.out.println(<span class="s">"Conversion of int to byte."</span>);
+        b = (<span class="t">byte</span>) i;                           <span class="c">// narrowing: 257 % 256 = 1</span>
+        <span class="t">System</span>.out.println(<span class="s">"i and b "</span> + i + <span class="s">" "</span> + b);
+
+        <span class="t">System</span>.out.println(<span class="s">"Conversion of double to int."</span>);
+        i = (<span class="t">int</span>) d;                            <span class="c">// fractional part is truncated (not rounded)</span>
+        <span class="t">System</span>.out.println(<span class="s">"d and i "</span> + d + <span class="s">" "</span> + i);
+
+        <span class="t">System</span>.out.println(<span class="s">"Conversion of double to byte."</span>);
+        b = (<span class="t">byte</span>) d;                           <span class="c">// first truncated to 323, then 323 % 256 = 67</span>
+        <span class="t">System</span>.out.println(<span class="s">"d and b "</span> + d + <span class="s">" "</span> + b);
+
+        <span class="t">int</span> big = <span class="n">100</span>;
+        <span class="t">long</span> l = big;                           <span class="c">// automatic widening: no cast needed</span>
+        <span class="t">double</span> dd = l;
+        <span class="t">System</span>.out.println(<span class="s">"Widening: "</span> + big + <span class="s">" -&gt; "</span> + l + <span class="s">" -&gt; "</span> + dd);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Conversion of int to byte.
+i and b 257 1
+Conversion of double to int.
+d and i 323.142 323
+Conversion of double to byte.
+d and b 323.142 67
+Widening: 100 -&gt; 100 -&gt; 100.0</pre></div></div>
+
+<h3>Automatic type promotion in expressions</h3>
+<div class="def"><b>Promotion rules.</b>
+<ol>
+<li>All <code>byte</code>, <code>short</code> and <code>char</code> operands are promoted to <code>int</code>.</li>
+<li>If any operand is <code>long</code>, the whole expression is <code>long</code>.</li>
+<li>If any operand is <code>float</code>, the whole expression is <code>float</code>.</li>
+<li>If any operand is <code>double</code>, the result is <code>double</code>.</li>
+</ol></div>
+<div class="prog"><p class="ptitle">All the rules together</p><figure class="code"><figcaption><span class="fn">Promote.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">Promote</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">byte</span> b = <span class="n">42</span>;
+        <span class="t">char</span> c = <span class="s">'a'</span>;                           <span class="c">// Unicode value 97</span>
+        <span class="t">short</span> s = <span class="n">1024</span>;
+        <span class="t">int</span> i = <span class="n">50000</span>;
+        <span class="t">float</span> f = <span class="n">5.5f</span>;
+        <span class="t">double</span> d = <span class="n">0.1234</span>;
+
+        <span class="c">// f * b : float * byte   -&gt; b promoted, result is float</span>
+        <span class="c">// i / c : int / char     -&gt; c promoted to int (97), integer division gives 515</span>
+        <span class="c">// d * s : double * short -&gt; result is double</span>
+        <span class="t">double</span> result = (f * b) + (i / c) - (d * s);
+
+        <span class="t">System</span>.out.println((f * b) + <span class="s">" + "</span> + (i / c) + <span class="s">" - "</span> + (d * s));
+        <span class="t">System</span>.out.println(<span class="s">"result = "</span> + result);
+
+        <span class="t">byte</span> x = <span class="n">50</span>;
+        <span class="c">// x = x * 2;                           // ERROR: x * 2 is an int and cannot go into a byte</span>
+        x = (<span class="t">byte</span>)(x * <span class="n">2</span>);                      <span class="c">// fix: explicit cast</span>
+        <span class="t">System</span>.out.println(<span class="s">"x = "</span> + x);
+
+        <span class="t">byte</span> p = <span class="n">40</span>, q = <span class="n">50</span>, r = <span class="n">100</span>;
+        <span class="t">int</span> t = p * q / r;                      <span class="c">// p * q = 2000 exceeds byte, but works because it is evaluated as int</span>
+        <span class="t">System</span>.out.println(<span class="s">"t = "</span> + t);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">231.0 + 515 - 126.3616
+result = 619.6384
+x = 100
+t = 20</pre></div></div>
+<div class="trap"><b>Classic compile error.</b> <code>byte b = 50; b = b * 2;</code> fails because <code>b * 2</code> is an int. Fix it with <code>b = (byte)(b * 2);</code></div>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain type conversion and casting with examples (6 marks): automatic conversion with its two conditions, casting with the general form, and the Conversion program.</li>
+<li>State the type promotion rules (3 to 4 marks).</li>
+<li>Why does <code>byte b = 50; b = b * 2;</code> give an error? How do you fix it?</li>
+<li>Output prediction: <code>(byte) 257</code> is 1, <code>(int) 9.7</code> is 9, <code>5 / 2</code> is 2.</li>
+<li>Differentiate implicit and explicit conversion.</li>
+</ul></div>
+</section>
+
+<!-- ======================= ARRAYS ======================= -->
+<section id="arrays">
+<h2>Arrays</h2>
+<div class="def"><b>Array.</b> A group of like-typed variables referred to by a common name. Elements are reached by an index that starts at 0. Arrays in Java are objects stored on the heap.</div>
+
+<h3>One-dimensional arrays</h3>
+<figure class="code solo"><figcaption><span class="fn">Declaring and creating</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="t">int</span>[] month_days;                 <span class="c">// step 1: declare (just a reference, no memory yet)</span>
+month_days = <span class="k">new</span> <span class="t">int</span>[<span class="n">12</span>];         <span class="c">// step 2: allocate memory for 12 ints</span>
+
+<span class="t">int</span>[] arr = <span class="k">new</span> <span class="t">int</span>[<span class="n">5</span>];           <span class="c">// both steps combined</span>
+<span class="t">int</span>[] nums = {<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>};        <span class="c">// declaration + initialization (size is 3 automatically)</span></code></pre></figure>
+<ul>
+<li>Default values after <code>new</code>: numeric elements are <code>0</code>, boolean is <code>false</code>, char is <code>'\u0000'</code>, references are <code>null</code>.</li>
+<li>Bounds are checked. Using <code>arr[5]</code> on a 5-element array throws <code>ArrayIndexOutOfBoundsException</code> at run time. C gives no such protection.</li>
+<li>The size is <code>arr.length</code>: a field, no parentheses. A String's size is <code>s.length()</code>, a method. This is a classic trap question.</li>
+</ul>
+<div class="prog"><p class="ptitle">1D, 2D and jagged arrays</p><figure class="code"><figcaption><span class="fn">ArrayDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">ArrayDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="c">// ----- 1D array -----</span>
+        <span class="t">int</span>[] a = <span class="k">new</span> <span class="t">int</span>[<span class="n">5</span>];                   <span class="c">// declaration + memory allocation; elements default to 0</span>
+        a[<span class="n">0</span>] = <span class="n">10</span>;
+        a[<span class="n">1</span>] = <span class="n">20</span>;
+        <span class="t">System</span>.out.println(<span class="s">"length = "</span> + a.length);               <span class="c">// length is a field, no parentheses</span>
+        <span class="t">System</span>.out.println(<span class="s">"a[0] = "</span> + a[<span class="n">0</span>] + <span class="s">", a[4] = "</span> + a[<span class="n">4</span>]);  <span class="c">// a[4] was never set, so it is 0</span>
+
+        <span class="t">int</span>[] nums = {<span class="n">5</span>, <span class="n">3</span>, <span class="n">8</span>};                 <span class="c">// declaration + initialization, size is 3 automatically</span>
+        <span class="k">for</span> (<span class="t">int</span> v : nums)
+            <span class="t">System</span>.out.print(v + <span class="s">" "</span>);
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ----- 2D array -----</span>
+        <span class="t">int</span>[][] m = { {<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>}, {<span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>} };   <span class="c">// 2 rows, 3 columns</span>
+        <span class="t">System</span>.out.println(<span class="s">"m[1][2] = "</span> + m[<span class="n">1</span>][<span class="n">2</span>]);               <span class="c">// row 1, column 2</span>
+        <span class="t">System</span>.out.println(<span class="s">"rows = "</span> + m.length + <span class="s">", cols = "</span> + m[<span class="n">0</span>].length);
+
+        <span class="c">// ----- jagged (irregular) array: each row has its own length -----</span>
+        <span class="t">int</span>[][] jag = <span class="k">new</span> <span class="t">int</span>[<span class="n">3</span>][];             <span class="c">// only the number of rows is given</span>
+        jag[<span class="n">0</span>] = <span class="k">new</span> <span class="t">int</span>[<span class="n">2</span>];
+        jag[<span class="n">1</span>] = <span class="k">new</span> <span class="t">int</span>[<span class="n">4</span>];
+        jag[<span class="n">2</span>] = <span class="k">new</span> <span class="t">int</span>[<span class="n">1</span>];
+        <span class="k">for</span> (<span class="t">int</span> r = <span class="n">0</span>; r &lt; jag.length; r++)
+            <span class="t">System</span>.out.println(<span class="s">"row "</span> + r + <span class="s">" has "</span> + jag[r].length + <span class="s">" elements"</span>);
+
+        <span class="c">// ----- bounds checking (exceptions are covered in Module 4) -----</span>
+        <span class="k">try</span> {
+            a[<span class="n">5</span>] = <span class="n">1</span>;                           <span class="c">// valid indexes are 0 to 4</span>
+        } <span class="k">catch</span> (<span class="t">ArrayIndexOutOfBoundsException</span> e) {
+            <span class="t">System</span>.out.println(<span class="s">"Caught: "</span> + e.getMessage());
+        }
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">length = 5
+a[0] = 10, a[4] = 0
+5 3 8 
+m[1][2] = 6
+rows = 2, cols = 3
+row 0 has 2 elements
+row 1 has 4 elements
+row 2 has 1 elements
+Caught: Index 5 out of bounds for length 5</pre></div></div>
+<div class="prog"><p class="ptitle">Average of array elements</p><figure class="code"><figcaption><span class="fn">Average.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">Average</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+        <span class="t">int</span>[] nums = {<span class="n">45</span>, <span class="n">67</span>, <span class="n">89</span>, <span class="n">34</span>, <span class="n">56</span>};
+        <span class="t">int</span> sum = <span class="n">0</span>;
+
+        <span class="k">for</span> (<span class="t">int</span> i = <span class="n">0</span>; i &lt; nums.length; i++)
+            sum += nums[i];
+
+        <span class="t">double</span> avg = (<span class="t">double</span>) sum / nums.length;   <span class="c">// cast first, otherwise 291 / 5 is integer division = 58</span>
+        <span class="t">System</span>.out.println(<span class="s">"Sum = "</span> + sum);
+        <span class="t">System</span>.out.println(<span class="s">"Average = "</span> + avg);
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">Sum = 291
+Average = 58.2</pre></div></div>
+<div class="trap"><b>The trap.</b> Without <code>(double)</code>, <code>291 / 5</code> is integer division and gives <code>58</code>.</div>
+
+<h3>Two-dimensional arrays</h3>
+<p>A 2D array is an array of arrays, like rows and columns. <code>m.length</code> is the number of rows and <code>m[0].length</code> is the number of columns.</p>
+<figure class="code solo"><figcaption><span class="fn">2D array forms</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="t">int</span>[][] twoD = <span class="k">new</span> <span class="t">int</span>[<span class="n">4</span>][<span class="n">5</span>];                  <span class="c">// 4 rows, 5 columns</span>
+<span class="t">int</span>[][] m = { {<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>}, {<span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>} };          <span class="c">// 2 x 3 with initializer</span>
+<span class="t">System</span>.out.println(m[<span class="n">1</span>][<span class="n">2</span>]);                   <span class="c">// 6  (row 1, column 2)</span></code></pre></figure>
+<p>In a jagged (irregular) array each row is a separate array with its own length. Give only the row count, then allocate each row, as the ArrayDemo program shows.</p>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain one-dimensional and two-dimensional arrays with examples (6 marks).</li>
+<li>Write a program to find the average of N numbers using an array.</li>
+<li>What happens if you access an index beyond the array size?</li>
+<li>Differentiate <code>length</code> and <code>length()</code>.</li>
+</ul></div>
+</section>
+
+<!-- ======================= OPERATORS ======================= -->
+<section id="operators">
+<h2>Operators</h2>
+
+<h3>Arithmetic operators</h3>
+<div class="tw"><table>
+<thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>+</code> <code>-</code> <code>*</code></td><td>add, subtract, multiply</td></tr>
+<tr><td><code>/</code></td><td>divide. Integer division truncates: <code>7 / 2</code> is <code>3</code>.</td></tr>
+<tr><td><code>%</code></td><td>modulus (remainder). Works on floating-point too: <code>42.25 % 10</code> is <code>2.25</code>.</td></tr>
+<tr><td><code>++</code> <code>--</code></td><td>increment and decrement</td></tr>
+<tr><td><code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code></td><td>compound assignment</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Prefix</b> <code>++x</code> increments first, then uses the value. <b>Postfix</b> <code>x++</code> uses the value first, then increments.</li>
+<li>Compound assignment <code>a += 4</code> means <code>a = a + 4</code> with an implicit cast. So <code>byte b = 10; b += 5;</code> compiles, but <code>b = b + 5;</code> does not.</li>
+</ul>
+
+<h3>Relational operators</h3>
+<p><code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> always produce a boolean. <code>=</code> is assignment and <code>==</code> is comparison. <code>if (x = 5)</code> is a compile error in Java. For objects, <code>==</code> compares references, not content, so strings are compared with <code>.equals()</code>.</p>
+
+<h3>Boolean logical operators</h3>
+<div class="tw"><table>
+<thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>&amp;</code></td><td>logical AND, evaluates both sides</td></tr>
+<tr><td><code>|</code></td><td>logical OR, evaluates both sides</td></tr>
+<tr><td><code>^</code></td><td>XOR, true when the operands differ</td></tr>
+<tr><td><code>&amp;&amp;</code></td><td>short-circuit AND: skips the right side if the left is false</td></tr>
+<tr><td><code>||</code></td><td>short-circuit OR: skips the right side if the left is true</td></tr>
+<tr><td><code>!</code></td><td>NOT</td></tr>
+</tbody></table></div>
+<div class="tw"><table>
+<thead><tr><th>A</th><th>B</th><th>A | B</th><th>A &amp; B</th><th>A ^ B</th><th>!A</th></tr></thead>
+<tbody>
+<tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td></tr>
+<tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td></tr>
+</tbody></table></div>
+
+<h3>Assignment operator</h3>
+<p><code>var = expression;</code> can be chained: <code>x = y = z = 100;</code> is evaluated right to left. The compound forms (<code>+=</code>, <code>*=</code> and so on) are also assignment operators.</p>
+
+<h3>The ? operator (ternary)</h3>
+<div class="def"><b>Form:</b> <code>expression1 ? expression2 : expression3</code>. If <code>expression1</code> (which must be boolean) is true, the result is <code>expression2</code>. Otherwise it is <code>expression3</code>.</div>
+
+<h3>Precedence and parentheses</h3>
+<p>Highest to lowest. Operators on the same row go left to right, except unary and assignment, which go right to left. Parentheses override precedence and make code easier to read.</p>
+<div class="tw"><table>
+<thead><tr><th>Level</th><th>Operators</th></tr></thead>
+<tbody>
+<tr><td>1 (highest)</td><td><code>++</code> <code>--</code> (postfix)</td></tr>
+<tr><td>2</td><td><code>++</code> <code>--</code> (prefix), <code>~</code>, <code>!</code>, unary <code>+</code> <code>-</code></td></tr>
+<tr><td>3</td><td><code>*</code> <code>/</code> <code>%</code></td></tr>
+<tr><td>4</td><td><code>+</code> <code>-</code></td></tr>
+<tr><td>5</td><td><code>&gt;&gt;</code> <code>&gt;&gt;&gt;</code> <code>&lt;&lt;</code></td></tr>
+<tr><td>6</td><td><code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code></td></tr>
+<tr><td>7</td><td><code>==</code> <code>!=</code></td></tr>
+<tr><td>8</td><td><code>&amp;</code></td></tr>
+<tr><td>9</td><td><code>^</code></td></tr>
+<tr><td>10</td><td><code>|</code></td></tr>
+<tr><td>11</td><td><code>&amp;&amp;</code></td></tr>
+<tr><td>12</td><td><code>||</code></td></tr>
+<tr><td>13</td><td><code>?:</code></td></tr>
+<tr><td>14 (lowest)</td><td><code>=</code> and <code>op=</code></td></tr>
+</tbody></table></div>
+
+<h3>All operators in one program</h3>
+<div class="prog"><p class="ptitle">Every listed operator, with the reason for each result</p><figure class="code"><figcaption><span class="fn">OperatorsDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">OperatorsDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+
+        <span class="c">// ============ 1. ARITHMETIC OPERATORS ============</span>
+        <span class="t">int</span> a = <span class="n">17</span>, b = <span class="n">5</span>;
+        <span class="t">System</span>.out.println(<span class="s">"a + b = "</span> + (a + b));   <span class="c">// 22</span>
+        <span class="t">System</span>.out.println(<span class="s">"a - b = "</span> + (a - b));   <span class="c">// 12</span>
+        <span class="t">System</span>.out.println(<span class="s">"a * b = "</span> + (a * b));   <span class="c">// 85</span>
+        <span class="t">System</span>.out.println(<span class="s">"a / b = "</span> + (a / b));   <span class="c">// 3  -&gt; int / int gives int, the fraction is dropped</span>
+        <span class="t">System</span>.out.println(<span class="s">"a % b = "</span> + (a % b));   <span class="c">// 2  -&gt; remainder of 17 / 5</span>
+
+        <span class="t">System</span>.out.println(<span class="s">"17.0 / 5 = "</span> + (<span class="n">17.0</span> / <span class="n">5</span>));     <span class="c">// 3.4  -&gt; one double operand makes it floating-point division</span>
+        <span class="t">System</span>.out.println(<span class="s">"42.25 % 10 = "</span> + (<span class="n">42.25</span> % <span class="n">10</span>)); <span class="c">// 2.25 -&gt; % works on floats in Java (not in C)</span>
+
+        <span class="c">// TRAP: once a String is involved, + joins text. Parentheses fix it.</span>
+        <span class="t">System</span>.out.println(<span class="s">"Without parentheses: "</span> + a + b);  <span class="c">// 175 (text "17" + text "5")</span>
+
+        <span class="c">// Increment / decrement</span>
+        <span class="t">int</span> x = <span class="n">5</span>;
+        <span class="t">int</span> y = x++;     <span class="c">// POSTFIX: y gets the old value 5 first, THEN x becomes 6</span>
+        <span class="t">int</span> z = ++x;     <span class="c">// PREFIX: x becomes 7 first, THEN z gets 7</span>
+        <span class="t">System</span>.out.println(<span class="s">"x="</span> + x + <span class="s">" y="</span> + y + <span class="s">" z="</span> + z);  <span class="c">// x=7 y=5 z=7</span>
+
+        <span class="t">int</span> w = <span class="n">10</span>;
+        w--;             <span class="c">// 9</span>
+        --w;             <span class="c">// 8  (alone on a line, prefix and postfix behave the same)</span>
+        <span class="t">System</span>.out.println(<span class="s">"w = "</span> + w);                        <span class="c">// 8</span>
+
+        <span class="c">// ============ 2. ASSIGNMENT OPERATORS ============</span>
+        <span class="t">int</span> c = <span class="n">10</span>;
+        c += <span class="n">5</span>;          <span class="c">// c = c + 5  -&gt; 15</span>
+        c -= <span class="n">3</span>;          <span class="c">// c = c - 3  -&gt; 12</span>
+        c *= <span class="n">2</span>;          <span class="c">// c = c * 2  -&gt; 24</span>
+        c /= <span class="n">4</span>;          <span class="c">// c = c / 4  -&gt; 6</span>
+        c %= <span class="n">4</span>;          <span class="c">// c = c % 4  -&gt; 2</span>
+        <span class="t">System</span>.out.println(<span class="s">"c = "</span> + c);                        <span class="c">// 2</span>
+
+        <span class="t">byte</span> bt = <span class="n">10</span>;
+        bt += <span class="n">5</span>;         <span class="c">// OK: compound assignment has an implicit cast back to byte</span>
+        <span class="c">// bt = bt + 5;  // ERROR: bt + 5 is promoted to int, and int can't go into a byte without a cast</span>
+        <span class="t">System</span>.out.println(<span class="s">"bt = "</span> + bt);                      <span class="c">// 15</span>
+
+        <span class="t">int</span> p, q, r;
+        p = q = r = <span class="n">100</span>; <span class="c">// chained assignment, evaluated right to left</span>
+        <span class="t">System</span>.out.println(<span class="s">"p q r = "</span> + p + <span class="s">" "</span> + q + <span class="s">" "</span> + r);  <span class="c">// 100 100 100</span>
+
+        <span class="c">// ============ 3. RELATIONAL OPERATORS (result is always boolean) ============</span>
+        <span class="t">int</span> m = <span class="n">10</span>, n = <span class="n">20</span>;
+        <span class="t">System</span>.out.println(<span class="s">"m == n : "</span> + (m == n));  <span class="c">// false</span>
+        <span class="t">System</span>.out.println(<span class="s">"m != n : "</span> + (m != n));  <span class="c">// true</span>
+        <span class="t">System</span>.out.println(<span class="s">"m &gt; n : "</span> + (m &gt; n));    <span class="c">// false</span>
+        <span class="t">System</span>.out.println(<span class="s">"m &lt; n : "</span> + (m &lt; n));    <span class="c">// true</span>
+        <span class="t">System</span>.out.println(<span class="s">"m &gt;= 10 : "</span> + (m &gt;= <span class="n">10</span>));<span class="c">// true</span>
+        <span class="t">System</span>.out.println(<span class="s">"n &lt;= 15 : "</span> + (n &lt;= <span class="n">15</span>));<span class="c">// false</span>
+
+        <span class="c">// For objects, == compares REFERENCES (addresses), .equals() compares CONTENT</span>
+        <span class="t">String</span> s1 = <span class="k">new</span> <span class="t">String</span>(<span class="s">"hi"</span>);
+        <span class="t">String</span> s2 = <span class="k">new</span> <span class="t">String</span>(<span class="s">"hi"</span>);
+        <span class="t">System</span>.out.println(<span class="s">"s1 == s2 : "</span> + (s1 == s2));        <span class="c">// false -&gt; two different objects</span>
+        <span class="t">System</span>.out.println(<span class="s">"s1.equals(s2) : "</span> + s1.equals(s2)); <span class="c">// true  -&gt; same text</span>
+
+        <span class="c">// ============ 4. BOOLEAN LOGICAL OPERATORS ============</span>
+        <span class="t">boolean</span> t = <span class="k">true</span>, f = <span class="k">false</span>;
+        <span class="t">System</span>.out.println(<span class="s">"t &amp; f = "</span> + (t &amp; f));    <span class="c">// false -&gt; AND is true only if both are true</span>
+        <span class="t">System</span>.out.println(<span class="s">"t | f = "</span> + (t | f));    <span class="c">// true  -&gt; OR is true if at least one is true</span>
+        <span class="t">System</span>.out.println(<span class="s">"t ^ f = "</span> + (t ^ f));    <span class="c">// true  -&gt; XOR is true if the operands DIFFER</span>
+        <span class="t">System</span>.out.println(<span class="s">"t ^ t = "</span> + (t ^ t));    <span class="c">// false -&gt; operands are the same</span>
+        <span class="t">System</span>.out.println(<span class="s">"!t = "</span> + (!t));          <span class="c">// false -&gt; NOT flips the value</span>
+        <span class="t">System</span>.out.println(<span class="s">"t &amp;&amp; f = "</span> + (t &amp;&amp; f));  <span class="c">// false</span>
+        <span class="t">System</span>.out.println(<span class="s">"t || f = "</span> + (t || f));  <span class="c">// true</span>
+
+        <span class="c">// Short-circuit (&amp;&amp;, ||) vs non-short-circuit (&amp;, |)</span>
+        <span class="t">int</span> k = <span class="n">0</span>;
+        <span class="t">boolean</span> sc1 = (<span class="k">false</span> &amp;&amp; (++k &gt; <span class="n">0</span>));  <span class="c">// left side is false, so &amp;&amp; SKIPS the right side</span>
+        <span class="t">System</span>.out.println(<span class="s">"k after &amp;&amp; = "</span> + k);   <span class="c">// 0 -&gt; ++k never ran</span>
+        <span class="t">boolean</span> sc2 = (<span class="k">false</span> &amp; (++k &gt; <span class="n">0</span>));   <span class="c">// &amp; ALWAYS evaluates both sides</span>
+        <span class="t">System</span>.out.println(<span class="s">"k after &amp; = "</span> + k);    <span class="c">// 1 -&gt; ++k did run</span>
+
+        <span class="t">int</span> d = <span class="n">0</span>, num = <span class="n">10</span>;
+        <span class="k">if</span> (d != <span class="n">0</span> &amp;&amp; num / d &gt; <span class="n">2</span>)           <span class="c">// d != 0 is false, so num / d is never evaluated</span>
+            <span class="t">System</span>.out.println(<span class="s">"not printed"</span>);
+        <span class="k">else</span>
+            <span class="t">System</span>.out.println(<span class="s">"Safe: &amp;&amp; skipped the division by zero"</span>);
+        <span class="c">// if (d != 0 &amp; num / d &gt; 2)  // would throw ArithmeticException: / by zero, since &amp; evaluates both sides</span>
+
+        <span class="c">// ============ 5. TERNARY (?) OPERATOR ============</span>
+        <span class="c">// form: condition ? value_if_true : value_if_false</span>
+        <span class="t">int</span> i = -<span class="n">10</span>;
+        <span class="t">int</span> abs = i &lt; <span class="n">0</span> ? -i : i;            <span class="c">// i &lt; 0 is true, so abs = -i = 10</span>
+        <span class="t">int</span> max = (m &gt; n) ? m : n;           <span class="c">// m &gt; n is false, so max = n = 20</span>
+        <span class="t">String</span> res = (m &gt; n) ? <span class="s">"m is bigger"</span> : <span class="s">"n is bigger"</span>;
+        <span class="t">System</span>.out.println(<span class="s">"abs = "</span> + abs);   <span class="c">// 10</span>
+        <span class="t">System</span>.out.println(<span class="s">"max = "</span> + max);   <span class="c">// 20</span>
+        <span class="t">System</span>.out.println(res);              <span class="c">// n is bigger</span>
+
+        <span class="c">// ============ 6. PRECEDENCE AND PARENTHESES ============</span>
+        <span class="t">int</span> p1 = <span class="n">10</span> + <span class="n">5</span> * <span class="n">2</span> - <span class="n">8</span> / <span class="n">4</span>;   <span class="c">// * and / first: 10 + 10 - 2 = 18</span>
+        <span class="t">int</span> p2 = (<span class="n">10</span> + <span class="n">5</span>) * <span class="n">2</span>;         <span class="c">// parentheses override precedence: 15 * 2 = 30</span>
+        <span class="t">int</span> p3 = <span class="n">100</span> / <span class="n">10</span> * <span class="n">2</span>;         <span class="c">// same level, left to right: (100/10)*2 = 20 (NOT 100/20 = 5)</span>
+        <span class="t">System</span>.out.println(<span class="s">"10 + 5 * 2 - 8 / 4 = "</span> + p1);   <span class="c">// 18</span>
+        <span class="t">System</span>.out.println(<span class="s">"(10 + 5) * 2 = "</span> + p2);          <span class="c">// 30</span>
+        <span class="t">System</span>.out.println(<span class="s">"100 / 10 * 2 = "</span> + p3);          <span class="c">// 20</span>
+
+        <span class="t">boolean</span> q1 = <span class="k">true</span> || <span class="k">false</span> &amp;&amp; <span class="k">false</span>;     <span class="c">// &amp;&amp; is higher than ||, so true || (false &amp;&amp; false) = true</span>
+        <span class="t">boolean</span> q2 = (<span class="k">true</span> || <span class="k">false</span>) &amp;&amp; <span class="k">false</span>;   <span class="c">// parentheses change the order: true &amp;&amp; false = false</span>
+        <span class="t">System</span>.out.println(<span class="s">"q1 = "</span> + q1);   <span class="c">// true</span>
+        <span class="t">System</span>.out.println(<span class="s">"q2 = "</span> + q2);   <span class="c">// false</span>
+
+        <span class="c">// ============ BONUS: BITWISE (not in the listed syllabus items, low priority) ============</span>
+        <span class="c">// 5 = 0101, 3 = 0011 in binary</span>
+        <span class="t">System</span>.out.println(<span class="s">"5 &amp; 3 = "</span> + (<span class="n">5</span> &amp; <span class="n">3</span>));        <span class="c">// 1   (0001) bit is 1 only if both bits are 1</span>
+        <span class="t">System</span>.out.println(<span class="s">"5 | 3 = "</span> + (<span class="n">5</span> | <span class="n">3</span>));        <span class="c">// 7   (0111) bit is 1 if either bit is 1</span>
+        <span class="t">System</span>.out.println(<span class="s">"5 ^ 3 = "</span> + (<span class="n">5</span> ^ <span class="n">3</span>));        <span class="c">// 6   (0110) bit is 1 if the bits differ</span>
+        <span class="t">System</span>.out.println(<span class="s">"~5 = "</span> + (~<span class="n">5</span>));              <span class="c">// -6  flips every bit</span>
+        <span class="t">System</span>.out.println(<span class="s">"5 &lt;&lt; 1 = "</span> + (<span class="n">5</span> &lt;&lt; <span class="n">1</span>));      <span class="c">// 10  shift left = multiply by 2</span>
+        <span class="t">System</span>.out.println(<span class="s">"-16 &gt;&gt; 2 = "</span> + (-<span class="n">16</span> &gt;&gt; <span class="n">2</span>));  <span class="c">// -4  signed shift: keeps the sign bit</span>
+        <span class="t">System</span>.out.println(<span class="s">"-16 &gt;&gt;&gt; 2 = "</span> + (-<span class="n">16</span> &gt;&gt;&gt; <span class="n">2</span>));<span class="c">// 1073741820  unsigned shift: fills with 0s</span>
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">a + b = 22
+a - b = 12
+a * b = 85
+a / b = 3
+a % b = 2
+17.0 / 5 = 3.4
+42.25 % 10 = 2.25
+Without parentheses: 175
+x=7 y=5 z=7
+w = 8
+c = 2
+bt = 15
+p q r = 100 100 100
+m == n : false
+m != n : true
+m &gt; n : false
+m &lt; n : true
+m &gt;= 10 : true
+n &lt;= 15 : false
+s1 == s2 : false
+s1.equals(s2) : true
+t &amp; f = false
+t | f = true
+t ^ f = true
+t ^ t = false
+!t = false
+t &amp;&amp; f = false
+t || f = true
+k after &amp;&amp; = 0
+k after &amp; = 1
+Safe: &amp;&amp; skipped the division by zero
+abs = 10
+max = 20
+n is bigger
+10 + 5 * 2 - 8 / 4 = 18
+(10 + 5) * 2 = 30
+100 / 10 * 2 = 20
+q1 = true
+q2 = false
+5 &amp; 3 = 1
+5 | 3 = 7
+5 ^ 3 = 6
+~5 = -6
+5 &lt;&lt; 1 = 10
+-16 &gt;&gt; 2 = -4
+-16 &gt;&gt;&gt; 2 = 1073741820</pre></div></div>
+<p>Bitwise operators are not in the listed syllabus items, so the last block is a low-priority bonus. <code>&gt;&gt;&gt;</code> fills the left bits with 0, while <code>&gt;&gt;</code> keeps the sign bit.</p>
+
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the arithmetic operators in Java with examples (6 marks).</li>
+<li>Differentiate <code>&amp;</code> and <code>&amp;&amp;</code> (3 to 4 marks). Use the short-circuit example.</li>
+<li>Explain the <code>?</code> operator with an example (3 marks).</li>
+<li>Output: <code>int a = 5; int b = a++ + ++a;</code> gives <code>b = 12</code> and <code>a = 7</code>. (<code>a++</code> uses 5, then <code>++a</code> makes it 7 and uses 7.)</li>
+<li>Precedence: <code>10 + 5 * 2 - 8 / 4</code> is <code>18</code>.</li>
+<li>Why does <code>byte b = 10; b = b + 5;</code> fail but <code>b += 5;</code> works?</li>
+</ul></div>
+</section>
+
+<!-- ======================= CONTROL ======================= -->
+<section id="control">
+<h2>Control Statements</h2>
+<div class="def"><b>Control statement.</b> A statement that controls the flow of execution. By default Java runs statements top to bottom. Control statements let a program make decisions, repeat code, or jump, depending on conditions at run time.</div>
+<div class="tree">Control statements
+|-- Selection (decision making)   if, switch
+|-- Iteration (looping)           while, do-while, for, for-each
+`-- Jump (transfer control)       break, continue, return</div>
+<p>Every condition must be a <code>boolean</code> expression. <code>if (1)</code> is an error in Java.</p>
+<div class="tw"><table>
+<thead><tr><th></th><th>Selection</th><th>Iteration</th><th>Jump</th></tr></thead>
+<tbody>
+<tr><td>Purpose</td><td>choose a path</td><td>repeat code</td><td>transfer control</td></tr>
+<tr><td>Examples</td><td><code>if</code>, <code>switch</code></td><td><code>while</code>, <code>do-while</code>, <code>for</code></td><td><code>break</code>, <code>continue</code>, <code>return</code></td></tr>
+<tr><td>Decided by</td><td>condition or value</td><td>condition</td><td>the statement itself</td></tr>
+</tbody></table></div>
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>What are control statements? Name and explain their types (5 to 6 marks).</li>
+<li>Differentiate selection and iteration statements.</li>
+</ul></div>
+</section>
+
+<!-- ======================= SELECTION ======================= -->
+<section id="selection">
+<h2>Selection Statements</h2>
+<div class="def"><b>Selection statements</b> let the program choose which path to execute based on a condition or the value of a variable.</div>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>simple <code>if</code></td><td>runs a block only if the condition is true</td></tr>
+<tr><td><code>if-else</code></td><td>chooses between two blocks</td></tr>
+<tr><td>nested <code>if</code></td><td>an <code>if</code> inside another <code>if</code></td></tr>
+<tr><td><code>if-else-if</code> ladder</td><td>chooses one block out of many conditions</td></tr>
+<tr><td><code>switch</code></td><td>chooses one of many branches by comparing one value with <code>case</code> labels</td></tr>
+</tbody></table></div>
+<figure class="code solo"><figcaption><span class="fn">General forms</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">if</span> (condition) statement1;
+<span class="k">else</span> statement2;
+
+<span class="k">switch</span> (expression) {
+    <span class="k">case</span> value1: statements; <span class="k">break</span>;
+    <span class="k">case</span> value2: statements; <span class="k">break</span>;
+    <span class="k">default</span>: statements;
+}</code></pre></figure>
+<div class="prog"><p class="ptitle">if family and switch</p><figure class="code"><figcaption><span class="fn">SelectionDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">SelectionDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+
+        <span class="c">// ========== 1. SIMPLE if ==========</span>
+        <span class="c">// The block runs only when the condition is true. Otherwise it is skipped.</span>
+        <span class="t">int</span> age = <span class="n">20</span>;
+        <span class="k">if</span> (age &gt;= <span class="n">18</span>)
+            <span class="t">System</span>.out.println(<span class="s">"1. Eligible to vote"</span>);
+
+        <span class="c">// ========== 2. if-else ==========</span>
+        <span class="c">// Exactly one of the two paths always runs.</span>
+        <span class="t">int</span> num = <span class="n">7</span>;
+        <span class="k">if</span> (num % <span class="n">2</span> == <span class="n">0</span>)                       <span class="c">// even numbers leave remainder 0</span>
+            <span class="t">System</span>.out.println(<span class="s">"2. "</span> + num + <span class="s">" is even"</span>);
+        <span class="k">else</span>
+            <span class="t">System</span>.out.println(<span class="s">"2. "</span> + num + <span class="s">" is odd"</span>);
+
+        <span class="c">// ========== 3. NESTED if ==========</span>
+        <span class="c">// An if placed inside another if. Used here to find the largest of three numbers.</span>
+        <span class="t">int</span> a = <span class="n">15</span>, b = <span class="n">42</span>, c = <span class="n">30</span>;
+        <span class="t">int</span> largest;
+        <span class="k">if</span> (a &gt; b) {
+            <span class="k">if</span> (a &gt; c)                          <span class="c">// inner if runs only when a &gt; b</span>
+                largest = a;
+            <span class="k">else</span>
+                largest = c;
+        } <span class="k">else</span> {
+            <span class="k">if</span> (b &gt; c)                          <span class="c">// inner if runs only when a &lt;= b</span>
+                largest = b;
+            <span class="k">else</span>
+                largest = c;
+        }
+        <span class="t">System</span>.out.println(<span class="s">"3. Largest = "</span> + largest);
+
+        <span class="c">// ========== 4. if-else-if LADDER ==========</span>
+        <span class="c">// Conditions are checked top to bottom. The FIRST true one runs and the rest are skipped.</span>
+        <span class="t">int</span> marks = <span class="n">78</span>;
+        <span class="t">char</span> grade;
+        <span class="k">if</span> (marks &gt;= <span class="n">90</span>)
+            grade = <span class="s">'S'</span>;
+        <span class="k">else</span> <span class="k">if</span> (marks &gt;= <span class="n">80</span>)
+            grade = <span class="s">'A'</span>;
+        <span class="k">else</span> <span class="k">if</span> (marks &gt;= <span class="n">70</span>)                   <span class="c">// 78 reaches here, because the earlier ones were false</span>
+            grade = <span class="s">'B'</span>;
+        <span class="k">else</span> <span class="k">if</span> (marks &gt;= <span class="n">60</span>)
+            grade = <span class="s">'C'</span>;
+        <span class="k">else</span> <span class="k">if</span> (marks &gt;= <span class="n">40</span>)
+            grade = <span class="s">'D'</span>;
+        <span class="k">else</span>                                    <span class="c">// final else is the "none of the above" case</span>
+            grade = <span class="s">'F'</span>;
+        <span class="t">System</span>.out.println(<span class="s">"4. Marks "</span> + marks + <span class="s">" -&gt; Grade "</span> + grade);
+
+        <span class="c">// ========== 5. switch WITH break ==========</span>
+        <span class="c">// switch compares one value against each case label. break stops execution</span>
+        <span class="c">// from running into the next case. default runs when no case matches.</span>
+        <span class="t">int</span> day = <span class="n">3</span>;
+        <span class="t">String</span> name;
+        <span class="k">switch</span> (day) {
+            <span class="k">case</span> <span class="n">1</span>:
+                name = <span class="s">"Monday"</span>;
+                <span class="k">break</span>;
+            <span class="k">case</span> <span class="n">2</span>:
+                name = <span class="s">"Tuesday"</span>;
+                <span class="k">break</span>;
+            <span class="k">case</span> <span class="n">3</span>:                             <span class="c">// day == 3 matches here</span>
+                name = <span class="s">"Wednesday"</span>;
+                <span class="k">break</span>;                          <span class="c">// jumps out of the switch</span>
+            <span class="k">case</span> <span class="n">4</span>:
+                name = <span class="s">"Thursday"</span>;
+                <span class="k">break</span>;
+            <span class="k">default</span>:
+                name = <span class="s">"Invalid day"</span>;
+        }
+        <span class="t">System</span>.out.println(<span class="s">"5. Day "</span> + day + <span class="s">" is "</span> + name);
+
+        <span class="c">// ========== 6. switch: FALL-THROUGH (break missing) ==========</span>
+        <span class="c">// Without break, execution continues into the NEXT case even if its label doesn't match.</span>
+        <span class="t">int</span> n = <span class="n">2</span>;
+        <span class="t">System</span>.out.print(<span class="s">"6. Starting at case 2: "</span>);
+        <span class="k">switch</span> (n) {
+            <span class="k">case</span> <span class="n">1</span>:
+                <span class="t">System</span>.out.print(<span class="s">"one "</span>);
+            <span class="k">case</span> <span class="n">2</span>:                             <span class="c">// n == 2 matches here, and it prints "two "</span>
+                <span class="t">System</span>.out.print(<span class="s">"two "</span>);
+            <span class="k">case</span> <span class="n">3</span>:                             <span class="c">// no break above, so it falls into this and prints "three "</span>
+                <span class="t">System</span>.out.print(<span class="s">"three "</span>);
+                <span class="k">break</span>;                          <span class="c">// fall-through stops here</span>
+            <span class="k">case</span> <span class="n">4</span>:
+                <span class="t">System</span>.out.print(<span class="s">"four "</span>);      <span class="c">// never reached</span>
+        }
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ========== 7. switch: FALL-THROUGH USED ON PURPOSE ==========</span>
+        <span class="c">// Stacking cases with no code between them lets several values share one block.</span>
+        <span class="t">int</span> month = <span class="n">2</span>;
+        <span class="t">int</span> days;
+        <span class="k">switch</span> (month) {
+            <span class="k">case</span> <span class="n">1</span>: <span class="k">case</span> <span class="n">3</span>: <span class="k">case</span> <span class="n">5</span>: <span class="k">case</span> <span class="n">7</span>: <span class="k">case</span> <span class="n">8</span>: <span class="k">case</span> <span class="n">10</span>: <span class="k">case</span> <span class="n">12</span>:
+                days = <span class="n">31</span>;
+                <span class="k">break</span>;
+            <span class="k">case</span> <span class="n">4</span>: <span class="k">case</span> <span class="n">6</span>: <span class="k">case</span> <span class="n">9</span>: <span class="k">case</span> <span class="n">11</span>:
+                days = <span class="n">30</span>;
+                <span class="k">break</span>;
+            <span class="k">case</span> <span class="n">2</span>:                             <span class="c">// month == 2 matches here</span>
+                days = <span class="n">28</span>;                      <span class="c">// ignoring leap years</span>
+                <span class="k">break</span>;
+            <span class="k">default</span>:
+                days = -<span class="n">1</span>;                      <span class="c">// invalid month</span>
+        }
+        <span class="t">System</span>.out.println(<span class="s">"7. Month "</span> + month + <span class="s">" has "</span> + days + <span class="s">" days"</span>);
+
+        <span class="c">// ========== 8. switch ON char ==========</span>
+        <span class="t">char</span> ch = <span class="s">'e'</span>;
+        <span class="k">switch</span> (ch) {
+            <span class="k">case</span> <span class="s">'a'</span>: <span class="k">case</span> <span class="s">'e'</span>: <span class="k">case</span> <span class="s">'i'</span>: <span class="k">case</span> <span class="s">'o'</span>: <span class="k">case</span> <span class="s">'u'</span>:
+                <span class="t">System</span>.out.println(<span class="s">"8. "</span> + ch + <span class="s">" is a vowel"</span>);     <span class="c">// 'e' matches here</span>
+                <span class="k">break</span>;
+            <span class="k">default</span>:
+                <span class="t">System</span>.out.println(<span class="s">"8. "</span> + ch + <span class="s">" is a consonant"</span>);
+        }
+
+        <span class="c">// ========== 9. switch ON String (Java 7 and later) ==========</span>
+        <span class="c">// Strings are compared with equals(), so the comparison is case-sensitive.</span>
+        <span class="t">String</span> cmd = <span class="s">"stop"</span>;
+        <span class="k">switch</span> (cmd) {
+            <span class="k">case</span> <span class="s">"start"</span>:
+                <span class="t">System</span>.out.println(<span class="s">"9. Starting"</span>);
+                <span class="k">break</span>;
+            <span class="k">case</span> <span class="s">"stop"</span>:                        <span class="c">// "stop" equals "stop"</span>
+                <span class="t">System</span>.out.println(<span class="s">"9. Stopping"</span>);
+                <span class="k">break</span>;
+            <span class="k">default</span>:
+                <span class="t">System</span>.out.println(<span class="s">"9. Unknown command"</span>);
+        }
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">1. Eligible to vote
+2. 7 is odd
+3. Largest = 42
+4. Marks 78 -&gt; Grade B
+5. Day 3 is Wednesday
+6. Starting at case 2: two three 
+7. Month 2 has 28 days
+8. e is a vowel
+9. Stopping</pre></div></div>
+
+<h4>Points to remember</h4>
+<ul>
+<li>The condition must be boolean. <code>if (x = 5)</code> is a compile error.</li>
+<li>Without braces only the next single statement belongs to the <code>if</code>. Use braces whenever there is more than one.</li>
+<li>An <code>else</code> belongs to the nearest unmatched <code>if</code> (dangling else).</li>
+<li><code>switch</code> accepts <code>byte</code>, <code>short</code>, <code>int</code>, <code>char</code>, <code>String</code>, <code>enum</code> and their wrappers. Not <code>long</code>, <code>float</code>, <code>double</code> or <code>boolean</code>.</li>
+<li>Case labels must be constants or literals, and duplicates are an error.</li>
+<li><code>switch</code> tests only equality. It cannot test ranges such as <code>marks &gt;= 90</code>.</li>
+<li><code>default</code> is optional, normally last. A missing <code>break</code> causes fall-through, the most-asked trick question.</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th><code>if-else-if</code></th><th><code>switch</code></th></tr></thead>
+<tbody>
+<tr><td>Tests ranges and complex conditions (<code>&gt;</code>, <code>&amp;&amp;</code>, <code>||</code>)</td><td>Tests only equality against constants</td></tr>
+<tr><td>Works on any boolean expression</td><td>Works on <code>int</code>, <code>char</code>, <code>String</code>, <code>enum</code> and so on</td></tr>
+<tr><td>Slower with many branches</td><td>Cleaner and faster for many fixed values</td></tr>
+</tbody></table></div>
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the selection statements in Java with examples (6 to 8 marks).</li>
+<li>Write a program to find the largest of three numbers using nested if.</li>
+<li>Explain <code>switch</code> with an example. What happens if <code>break</code> is omitted?</li>
+<li>Differentiate <code>if-else-if</code> and <code>switch</code>.</li>
+<li>Write a menu-driven calculator using switch.</li>
+</ul></div>
+</section>
+
+<!-- ======================= ITERATION ======================= -->
+<section id="iteration">
+<h2>Iteration Statements</h2>
+<div class="def"><b>Iteration statements</b> repeat a set of statements as long as a condition remains true. Each pass through the body is one iteration. A loop has four parts: initialization, condition, body and update.</div>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Key feature</th></tr></thead>
+<tbody>
+<tr><td><code>while</code></td><td>Entry-controlled. The condition is checked before the body, so the body may run zero times.</td></tr>
+<tr><td><code>do-while</code></td><td>Exit-controlled. The condition is checked after the body, so the body runs at least once.</td></tr>
+<tr><td><code>for</code></td><td>Initialization, condition and update on one line. Best when the count is known.</td></tr>
+<tr><td>for-each</td><td>A read-only walk through every element of an array or collection, with no index.</td></tr>
+<tr><td>nested loops</td><td>A loop inside a loop: rows and columns, patterns, matrices.</td></tr>
+</tbody></table></div>
+<figure class="code solo"><figcaption><span class="fn">General forms</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">while</span> (condition) { body }
+
+<span class="k">do</span> { body } <span class="k">while</span> (condition);          <span class="c">// note the semicolon</span>
+
+<span class="k">for</span> (initialization; condition; iteration) { body }
+
+<span class="k">for</span> (type <span class="t">var</span> : collection) { body }    <span class="c">// for-each</span></code></pre></figure>
+<div class="def"><b>Local variable type inference.</b> Using <code>var</code> instead of writing the type, so the compiler infers it from the initial value (Java 10 and later). Example: <code>for (var i = 0; i &lt; 5; i++)</code>. It needs an initializer. It is not dynamic typing, because the type is fixed at compile time.</div>
+<div class="prog"><p class="ptitle">All loops, var, nested loops and the number triangle</p><figure class="code"><figcaption><span class="fn">IterationDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">IterationDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+
+        <span class="c">// ========== 1. while LOOP (entry-controlled) ==========</span>
+        <span class="c">// The condition is checked BEFORE every iteration.</span>
+        <span class="t">int</span> count = <span class="n">1</span>;                                  <span class="c">// initialization (outside the loop)</span>
+        <span class="t">System</span>.out.print(<span class="s">"1. while: "</span>);
+        <span class="k">while</span> (count &lt;= <span class="n">5</span>) {                            <span class="c">// condition</span>
+            <span class="t">System</span>.out.print(count + <span class="s">" "</span>);
+            count++;                                    <span class="c">// update (forget this and the loop never ends)</span>
+        }
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ========== 2. while MAY RUN ZERO TIMES ==========</span>
+        <span class="t">int</span> k = <span class="n">10</span>;
+        <span class="k">while</span> (k &lt; <span class="n">5</span>) {                                 <span class="c">// false on the very first check</span>
+            <span class="t">System</span>.out.println(<span class="s">"never printed"</span>);
+        }
+        <span class="t">System</span>.out.println(<span class="s">"2. while body ran zero times, k = "</span> + k);
+
+        <span class="c">// ========== 3. do-while (exit-controlled) ==========</span>
+        <span class="c">// The body runs FIRST and the condition is checked AFTER, so it runs at least once.</span>
+        <span class="t">int</span> j = <span class="n">10</span>;
+        <span class="k">do</span> {
+            <span class="t">System</span>.out.println(<span class="s">"3. do-while ran once, j = "</span> + j);
+            j++;
+        } <span class="k">while</span> (j &lt; <span class="n">5</span>);                                <span class="c">// false, but the body already ran once. Note the semicolon.</span>
+
+        <span class="c">// ========== 4. while: SUM OF DIGITS ==========</span>
+        <span class="t">int</span> num = <span class="n">4528</span>;
+        <span class="t">int</span> digitSum = <span class="n">0</span>;
+        <span class="k">while</span> (num &gt; <span class="n">0</span>) {
+            digitSum += num % <span class="n">10</span>;                       <span class="c">// num % 10 picks the last digit</span>
+            num /= <span class="n">10</span>;                                  <span class="c">// num / 10 removes the last digit</span>
+        }
+        <span class="t">System</span>.out.println(<span class="s">"4. Sum of digits of 4528 = "</span> + digitSum);   <span class="c">// 8+2+5+4 = 19</span>
+
+        <span class="c">// ========== 5. for LOOP: FACTORIAL ==========</span>
+        <span class="c">// for (initialization; condition; update). All three parts sit on one line.</span>
+        <span class="t">int</span> fact = <span class="n">1</span>;
+        <span class="k">for</span> (<span class="t">int</span> x = <span class="n">1</span>; x &lt;= <span class="n">5</span>; x++)                    <span class="c">// x exists only inside this loop</span>
+            fact *= x;                                  <span class="c">// 1*2*3*4*5</span>
+        <span class="t">System</span>.out.println(<span class="s">"5. 5! = "</span> + fact);          <span class="c">// 120</span>
+
+        <span class="c">// ========== 6. for WITH TWO VARIABLES (comma operator) ==========</span>
+        <span class="t">System</span>.out.print(<span class="s">"6. lo-hi pairs: "</span>);
+        <span class="k">for</span> (<span class="t">int</span> lo = <span class="n">0</span>, hi = <span class="n">5</span>; lo &lt; hi; lo++, hi--)   <span class="c">// both variables change on each pass</span>
+            <span class="t">System</span>.out.print(lo + <span class="s">"-"</span> + hi + <span class="s">" "</span>);      <span class="c">// 0-5 1-4 2-3 (stops when lo reaches hi)</span>
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ========== 7. for-each LOOP ==========</span>
+        <span class="c">// Walks through every element with no index. Read-only access.</span>
+        <span class="t">int</span>[] nums = {<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>, <span class="n">40</span>};
+        <span class="t">int</span> total = <span class="n">0</span>;
+        <span class="t">System</span>.out.print(<span class="s">"7. for-each: "</span>);
+        <span class="k">for</span> (<span class="t">int</span> v : nums) {                            <span class="c">// read as "for each int v in nums"</span>
+            <span class="t">System</span>.out.print(v + <span class="s">" "</span>);
+            total += v;
+        }
+        <span class="t">System</span>.out.println();
+        <span class="t">System</span>.out.println(<span class="s">"7. total = "</span> + total);      <span class="c">// 100</span>
+
+        <span class="k">for</span> (<span class="t">int</span> v : nums)
+            v = v * <span class="n">2</span>;                                  <span class="c">// changes only the COPY v, not the array</span>
+        <span class="t">System</span>.out.println(<span class="s">"7. nums[0] after doubling the copy = "</span> + nums[<span class="n">0</span>]);   <span class="c">// still 10</span>
+
+        <span class="c">// ========== 8. LOCAL VARIABLE TYPE INFERENCE (var) IN LOOPS ==========</span>
+        <span class="c">// The compiler works out the type from the initial value (Java 10 and later).</span>
+        <span class="t">System</span>.out.print(<span class="s">"8. var in for: "</span>);
+        <span class="k">for</span> (<span class="t">var</span> n = <span class="n">1</span>; n &lt;= <span class="n">3</span>; n++)                    <span class="c">// n is inferred as int</span>
+            <span class="t">System</span>.out.print(n * n + <span class="s">" "</span>);              <span class="c">// 1 4 9</span>
+        <span class="t">System</span>.out.println();
+
+        <span class="t">String</span>[] names = {<span class="s">"Ram"</span>, <span class="s">"Sita"</span>};
+        <span class="t">System</span>.out.print(<span class="s">"8. var in for-each: "</span>);
+        <span class="k">for</span> (<span class="t">var</span> s : names)                             <span class="c">// s is inferred as String</span>
+            <span class="t">System</span>.out.print(s + <span class="s">" "</span>);
+        <span class="t">System</span>.out.println();
+        <span class="c">// var must have an initializer. "var z;" is an error, and "var z = null;" is an error.</span>
+
+        <span class="c">// ========== 9. NESTED LOOPS: 3 x 3 MULTIPLICATION GRID ==========</span>
+        <span class="c">// The inner loop completes ALL its iterations for every ONE iteration of the outer loop.</span>
+        <span class="t">System</span>.out.println(<span class="s">"9. Multiplication grid:"</span>);
+        <span class="k">for</span> (<span class="t">int</span> r = <span class="n">1</span>; r &lt;= <span class="n">3</span>; r++) {                  <span class="c">// outer loop = rows</span>
+            <span class="k">for</span> (<span class="t">int</span> c = <span class="n">1</span>; c &lt;= <span class="n">3</span>; c++) {              <span class="c">// inner loop = columns</span>
+                <span class="t">System</span>.out.print(r * c + <span class="s">"\t"</span>);         <span class="c">// \t is a tab, for alignment</span>
+            }
+            <span class="t">System</span>.out.println();                       <span class="c">// new line after each row</span>
+        }
+
+        <span class="c">// ========== 10. PATTERN: RIGHT-ANGLE TRIANGLE OF NUMBERS 0-9 ==========</span>
+        <span class="c">// Row 0 prints 1 number, row 1 prints 2 numbers ... row 9 prints 10 numbers.</span>
+        <span class="t">System</span>.out.println(<span class="s">"10. Number triangle:"</span>);
+        <span class="k">for</span> (<span class="t">int</span> row = <span class="n">0</span>; row &lt;= <span class="n">9</span>; row++) {            <span class="c">// outer loop picks the row (0 to 9)</span>
+            <span class="k">for</span> (<span class="t">int</span> col = <span class="n">0</span>; col &lt;= row; col++) {      <span class="c">// inner loop prints 0..row, so it grows with the row</span>
+                <span class="t">System</span>.out.print(col + <span class="s">" "</span>);
+            }
+            <span class="t">System</span>.out.println();                       <span class="c">// move to the next line after each row</span>
+        }
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">1. while: 1 2 3 4 5 
+2. while body ran zero times, k = 10
+3. do-while ran once, j = 10
+4. Sum of digits of 4528 = 19
+5. 5! = 120
+6. lo-hi pairs: 0-5 1-4 2-3 
+7. for-each: 10 20 30 40 
+7. total = 100
+7. nums[0] after doubling the copy = 10
+8. var in for: 1 4 9 
+8. var in for-each: Ram Sita 
+9. Multiplication grid:
+1	2	3	
+2	4	6	
+3	6	9	
+10. Number triangle:
+0 
+0 1 
+0 1 2 
+0 1 2 3 
+0 1 2 3 4 
+0 1 2 3 4 5 
+0 1 2 3 4 5 6 
+0 1 2 3 4 5 6 7 
+0 1 2 3 4 5 6 7 8 
+0 1 2 3 4 5 6 7 8 9 </pre></div></div>
+
+<h4>The triangle pattern, and its variants</h4>
+<p>The structure never changes: the outer loop is the row, and the inner loop runs up to the row number. Only the inner print changes.</p>
+<div class="tw"><table>
+<thead><tr><th>You want</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td><code>0 / 0 1 / 0 1 2 ...</code> (above)</td><td>inner loop prints <code>col + " "</code></td></tr>
+<tr><td><code>0 / 1 1 / 2 2 2 ...</code> (row number repeated)</td><td>inner loop prints <code>row + " "</code></td></tr>
+<tr><td>upside-down triangle</td><td>outer loop counts down from 9 to 0</td></tr>
+</tbody></table></div>
+
+<h4>Points to remember</h4>
+<ul>
+<li>A variable still in scope cannot be redeclared, so the demo uses different names at the top level (<code>count</code>, <code>j</code>, <code>k</code>, <code>num</code>).</li>
+<li>for-each cannot modify array elements, cannot go backwards and cannot skip elements. Use a normal <code>for</code> for those.</li>
+<li><code>while (true)</code> and <code>for (;;)</code> run forever unless <code>break</code> exits them.</li>
+<li>An outer loop of 3 and an inner loop of 3 runs the inner body 9 times.</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th><code>while</code></th><th><code>do-while</code></th></tr></thead>
+<tbody>
+<tr><td>Entry-controlled</td><td>Exit-controlled</td></tr>
+<tr><td>Condition checked first</td><td>Body runs first</td></tr>
+<tr><td>May run zero times</td><td>Runs at least once</td></tr>
+<tr><td>No semicolon after the condition</td><td>Semicolon after <code>while (condition);</code></td></tr>
+</tbody></table></div>
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the iteration statements in Java with examples (6 to 8 marks).</li>
+<li>Differentiate <code>while</code> and <code>do-while</code> (4 marks).</li>
+<li>Explain the for-each loop with an example. What are its limitations?</li>
+<li>Write a program to print the number triangle pattern.</li>
+<li>What is local variable type inference? Give an example.</li>
+<li>Output: <code>for (int x = 0; x &lt; 3; x++) System.out.print(x);</code> prints <code>012</code>.</li>
+</ul></div>
+</section>
+
+<!-- ======================= JUMP ======================= -->
+<section id="jump">
+<h2>Jump Statements</h2>
+<div class="def"><b>Jump statements</b> transfer control unconditionally to another part of the program.</div>
+<div class="def"><b>break.</b> Has three uses: (1) terminates a statement sequence in a <code>switch</code>, (2) exits a loop, (3) acts as a "civilized goto" through a labeled break.</div>
+<div class="def"><b>continue.</b> Skips the rest of the current iteration and moves to the next one. In a <code>for</code> loop control goes to the update expression, then the condition. It can also be labeled.</div>
+<div class="def"><b>return.</b> Exits the current method and passes control back to the caller. It returns a value (<code>return n * n;</code>) or nothing (<code>return;</code> in a <code>void</code> method).</div>
+<div class="prog"><p class="ptitle">break, labeled break, continue, labeled continue, return</p><figure class="code"><figcaption><span class="fn">JumpDemo.java</span><button class="copy" type="button">Copy</button></figcaption><pre><code><span class="k">class</span> <span class="t">JumpDemo</span> {
+
+    <span class="c">// ----- helper method for the return examples -----</span>
+    <span class="k">static</span> <span class="t">int</span> square(<span class="t">int</span> n) {
+        <span class="k">return</span> n * n;                       <span class="c">// return WITH a value: sends n*n back to the caller</span>
+    }
+
+    <span class="k">static</span> <span class="t">void</span> checkAge(<span class="t">int</span> age) {
+        <span class="k">if</span> (age &lt; <span class="n">18</span>) {
+            <span class="t">System</span>.out.println(<span class="s">"7. Under 18, leaving the method early"</span>);
+            <span class="k">return</span>;                         <span class="c">// return WITHOUT a value (void method): exits immediately</span>
+        }
+        <span class="t">System</span>.out.println(<span class="s">"7. Age is "</span> + age + <span class="s">", eligible"</span>);   <span class="c">// skipped if the return above ran</span>
+    }
+
+    <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> main(<span class="t">String</span>[] args) {
+
+        <span class="c">// ========== 1. break: EXIT A LOOP ==========</span>
+        <span class="c">// break ends the NEAREST enclosing loop immediately.</span>
+        <span class="t">System</span>.out.print(<span class="s">"1. break in loop: "</span>);
+        <span class="k">for</span> (<span class="t">int</span> x = <span class="n">1</span>; x &lt;= <span class="n">10</span>; x++) {
+            <span class="k">if</span> (x == <span class="n">5</span>)
+                <span class="k">break</span>;                      <span class="c">// loop stops when x reaches 5</span>
+            <span class="t">System</span>.out.print(x + <span class="s">" "</span>);      <span class="c">// prints 1 2 3 4</span>
+        }
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ========== 2. break: SEARCH AND STOP ==========</span>
+        <span class="t">int</span>[] data = {<span class="n">4</span>, <span class="n">9</span>, <span class="n">15</span>, <span class="n">22</span>, <span class="n">30</span>};
+        <span class="t">int</span> target = <span class="n">15</span>, foundAt = -<span class="n">1</span>;
+        <span class="k">for</span> (<span class="t">int</span> p = <span class="n">0</span>; p &lt; data.length; p++) {
+            <span class="k">if</span> (data[p] == target) {
+                foundAt = p;
+                <span class="k">break</span>;                      <span class="c">// no need to check the remaining elements</span>
+            }
+        }
+        <span class="t">System</span>.out.println(<span class="s">"2. "</span> + target + <span class="s">" found at index "</span> + foundAt);   <span class="c">// 2</span>
+
+        <span class="c">// ========== 3. break: END A switch CASE ==========</span>
+        <span class="c">// (covered in selection statements; break stops fall-through)</span>
+        <span class="t">int</span> day = <span class="n">2</span>;
+        <span class="k">switch</span> (day) {
+            <span class="k">case</span> <span class="n">1</span>: <span class="t">System</span>.out.println(<span class="s">"3. Monday"</span>); <span class="k">break</span>;
+            <span class="k">case</span> <span class="n">2</span>: <span class="t">System</span>.out.println(<span class="s">"3. Tuesday"</span>); <span class="k">break</span>;     <span class="c">// runs, then break leaves the switch</span>
+            <span class="k">case</span> <span class="n">3</span>: <span class="t">System</span>.out.println(<span class="s">"3. Wednesday"</span>); <span class="k">break</span>;
+        }
+
+        <span class="c">// ========== 4. LABELED break ("civilized goto") ==========</span>
+        <span class="c">// A plain break leaves only the INNER loop. A labeled break leaves the labeled (outer) loop.</span>
+        <span class="t">System</span>.out.print(<span class="s">"4. labeled break: "</span>);
+        outer:                              <span class="c">// label (name followed by a colon) placed before the outer loop</span>
+        <span class="k">for</span> (<span class="t">int</span> r = <span class="n">1</span>; r &lt;= <span class="n">3</span>; r++) {
+            <span class="k">for</span> (<span class="t">int</span> c = <span class="n">1</span>; c &lt;= <span class="n">3</span>; c++) {
+                <span class="k">if</span> (r == <span class="n">2</span> &amp;&amp; c == <span class="n">2</span>)
+                    <span class="k">break</span> outer;            <span class="c">// exits BOTH loops</span>
+                <span class="t">System</span>.out.print(r + <span class="s">""</span> + c + <span class="s">" "</span>);
+            }
+        }
+        <span class="t">System</span>.out.println();               <span class="c">// printed: 11 12 13 21</span>
+
+        <span class="c">// For comparison, a plain break inside nested loops:</span>
+        <span class="t">System</span>.out.print(<span class="s">"4. plain break:   "</span>);
+        <span class="k">for</span> (<span class="t">int</span> r = <span class="n">1</span>; r &lt;= <span class="n">3</span>; r++) {
+            <span class="k">for</span> (<span class="t">int</span> c = <span class="n">1</span>; c &lt;= <span class="n">3</span>; c++) {
+                <span class="k">if</span> (r == <span class="n">2</span> &amp;&amp; c == <span class="n">2</span>)
+                    <span class="k">break</span>;                  <span class="c">// exits only the INNER loop; the outer loop continues</span>
+                <span class="t">System</span>.out.print(r + <span class="s">""</span> + c + <span class="s">" "</span>);
+            }
+        }
+        <span class="t">System</span>.out.println();               <span class="c">// printed: 11 12 13 21 31 32 33</span>
+
+        <span class="c">// ========== 5. continue: SKIP ONE ITERATION ==========</span>
+        <span class="c">// continue skips the rest of the CURRENT iteration and jumps to the next one.</span>
+        <span class="t">System</span>.out.print(<span class="s">"5. continue (skip 3 and 6): "</span>);
+        <span class="k">for</span> (<span class="t">int</span> x = <span class="n">1</span>; x &lt;= <span class="n">8</span>; x++) {
+            <span class="k">if</span> (x == <span class="n">3</span> || x == <span class="n">6</span>)
+                <span class="k">continue</span>;                   <span class="c">// jumps straight to x++ and the condition check</span>
+            <span class="t">System</span>.out.print(x + <span class="s">" "</span>);      <span class="c">// 1 2 4 5 7 8</span>
+        }
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// print only odd numbers using continue</span>
+        <span class="t">System</span>.out.print(<span class="s">"5. odd numbers: "</span>);
+        <span class="k">for</span> (<span class="t">int</span> x = <span class="n">1</span>; x &lt;= <span class="n">9</span>; x++) {
+            <span class="k">if</span> (x % <span class="n">2</span> == <span class="n">0</span>)
+                <span class="k">continue</span>;                   <span class="c">// skip even numbers</span>
+            <span class="t">System</span>.out.print(x + <span class="s">" "</span>);
+        }
+        <span class="t">System</span>.out.println();
+
+        <span class="c">// ========== 6. LABELED continue ==========</span>
+        <span class="c">// Skips the rest of the INNER loop AND continues with the next iteration of the OUTER loop.</span>
+        <span class="t">System</span>.out.print(<span class="s">"6. labeled continue: "</span>);
+        rows:
+        <span class="k">for</span> (<span class="t">int</span> r = <span class="n">1</span>; r &lt;= <span class="n">3</span>; r++) {
+            <span class="k">for</span> (<span class="t">int</span> c = <span class="n">1</span>; c &lt;= <span class="n">3</span>; c++) {
+                <span class="k">if</span> (c &gt; r)
+                    <span class="k">continue</span> rows;          <span class="c">// abandon this row, start the next one</span>
+                <span class="t">System</span>.out.print(r + <span class="s">""</span> + c + <span class="s">" "</span>);
+            }
+        }
+        <span class="t">System</span>.out.println();               <span class="c">// printed: 11 21 22 31 32 33</span>
+
+        <span class="c">// ========== 7. return ==========</span>
+        <span class="c">// return exits the CURRENT METHOD and goes back to the caller.</span>
+        <span class="t">System</span>.out.println(<span class="s">"7. square(6) = "</span> + square(<span class="n">6</span>));   <span class="c">// 36</span>
+        checkAge(<span class="n">15</span>);
+        checkAge(<span class="n">20</span>);
+
+        <span class="c">// ========== 8. return INSIDE main ==========</span>
+        <span class="t">System</span>.out.println(<span class="s">"8. before return"</span>);
+        <span class="k">return</span>;                             <span class="c">// ends main, so the program stops here</span>
+        <span class="c">// Any statement written after this line is an "unreachable code" compile error.</span>
+    }
+}</code></pre></figure><div class="out"><div class="oh"><span>Output</span><em>click to reveal</em></div><pre class="outbody">1. break in loop: 1 2 3 4 
+2. 15 found at index 2
+3. Tuesday
+4. labeled break: 11 12 13 21 
+4. plain break:   11 12 13 21 31 32 33 
+5. continue (skip 3 and 6): 1 2 4 5 7 8 
+5. odd numbers: 1 3 5 7 9 
+6. labeled continue: 11 21 22 31 32 33 
+7. square(6) = 36
+7. Under 18, leaving the method early
+7. Age is 20, eligible
+8. before return</pre></div></div>
+<div class="tw"><table>
+<thead><tr><th><code>break</code></th><th><code>continue</code></th></tr></thead>
+<tbody>
+<tr><td>Terminates the loop or switch completely</td><td>Skips only the current iteration</td></tr>
+<tr><td>Control goes to the statement after the loop</td><td>Control goes to the next iteration</td></tr>
+<tr><td>Works in loops and <code>switch</code></td><td>Works in loops only</td></tr>
+</tbody></table></div>
+<h4>Points to remember</h4>
+<ul>
+<li>Label syntax: <code>labelName:</code> goes directly before the loop, then <code>break labelName;</code> or <code>continue labelName;</code>.</li>
+<li>A labeled break needs a label that encloses the statement. You cannot jump to a label elsewhere, which is why it is "civilized" compared with goto.</li>
+<li><code>goto</code> is reserved but not usable in Java.</li>
+<li><code>continue</code> outside a loop, or <code>break</code> outside a loop or switch, is a compile error.</li>
+<li>In a <code>while</code> loop, do the update before <code>continue</code>, or the loop never ends.</li>
+</ul>
+<div class="exam"><h4>Likely exam questions</h4><ul>
+<li>Explain the jump statements in Java with examples (6 to 8 marks).</li>
+<li>Explain the three uses of <code>break</code> (5 marks).</li>
+<li>Explain labeled break and continue with an example. Compare plain and labeled break.</li>
+<li>Differentiate <code>break</code> and <code>continue</code>.</li>
+<li>Output: <code>for (int i = 1; i &lt;= 5; i++) { if (i == 3) continue; System.out.print(i); }</code> prints <code>1245</code>. With <code>break</code> instead it prints <code>12</code>.</li>
+</ul></div>
+</section>
+
+<!-- ======================= CHEAT SHEET ======================= -->
+<section id="cheat">
+<h2>Traps and Quick Facts</h2>
+<p>Read this section last, the night before.</p>
+
+<h3>Traps that cost marks</h3>
+<div class="tw"><table>
+<thead><tr><th>Code</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td><code>5 / 9</code></td><td>0, integer division. Use <code>5.0 / 9.0</code>.</td></tr>
+<tr><td><code>float f = 3.14;</code></td><td>Compile error. Use <code>3.14f</code>.</td></tr>
+<tr><td><code>long l = 10000000000;</code></td><td>Compile error. Needs the <code>L</code> suffix.</td></tr>
+<tr><td><code>byte b = 50; b = b * 2;</code></td><td>Compile error. Expression is promoted to int. Cast it.</td></tr>
+<tr><td><code>byte b = 10; b += 5;</code></td><td>Compiles. Compound assignment has an implicit cast.</td></tr>
+<tr><td><code>(byte) 257</code></td><td>1, since 257 % 256.</td></tr>
+<tr><td><code>(int) 9.7</code></td><td>9, truncation not rounding.</td></tr>
+<tr><td><code>'A' + 1</code></td><td>66, an int. <code>(char)('A' + 1)</code> is <code>B</code>.</td></tr>
+<tr><td><code>if (1)</code> or <code>boolean b = 1;</code></td><td>Compile error. Boolean is not an integer.</td></tr>
+<tr><td><code>"a" + 17 + 5</code></td><td><code>a175</code>. Once a String is involved, <code>+</code> joins text.</td></tr>
+<tr><td><code>s1 == s2</code> on two Strings</td><td>Compares references. Use <code>.equals()</code>.</td></tr>
+<tr><td><code>int bar = 1; { int bar = 2; }</code></td><td>Compile error. Java does not allow shadowing a local.</td></tr>
+<tr><td><code>arr.length</code> vs <code>str.length()</code></td><td>Array field has no parentheses. String method does.</td></tr>
+<tr><td><code>switch</code> without <code>break</code></td><td>Fall-through into the next case.</td></tr>
+<tr><td><code>d != 0 &amp; n / d &gt; 2</code> with <code>d = 0</code></td><td>ArithmeticException. <code>&amp;&amp;</code> would have skipped the division.</td></tr>
+<tr><td>for-each assigning to the loop variable</td><td>Changes only the copy, not the array.</td></tr>
+</tbody></table></div>
+
+<h3>One-line answers</h3>
+<div class="tw"><table>
+<thead><tr><th>Question</th><th>Answer</th></tr></thead>
+<tbody>
+<tr><td>Is the JVM platform independent?</td><td>No. Bytecode is platform independent, the JVM is platform dependent.</td></tr>
+<tr><td>Why must <code>main</code> be static?</td><td>The JVM calls it before any object exists.</td></tr>
+<tr><td>Why is char 16 bits?</td><td>Unicode.</td></tr>
+<tr><td>Default type of <code>3.14</code>? Of <code>100</code>?</td><td>double, int.</td></tr>
+<tr><td>Which types can switch use?</td><td>byte, short, int, char, String, enum and wrappers.</td></tr>
+<tr><td>Which loop runs at least once?</td><td>do-while.</td></tr>
+<tr><td>Three uses of break?</td><td>End a switch case, exit a loop, labeled break.</td></tr>
+<tr><td>Three OOP principles?</td><td>Encapsulation, inheritance, polymorphism.</td></tr>
+<tr><td>Two kinds of polymorphism?</td><td>Compile-time (overloading), run-time (overriding).</td></tr>
+<tr><td>Does Java have goto?</td><td>Reserved word, not usable. Labeled break and continue replace it.</td></tr>
+</tbody></table></div>
+
+<footer>Module 1 of 1BCS302. Every program above was compiled and run, and the outputs shown are the real ones.</footer>
+</section>
+
+</div>
+</main>
+<button class="top" id="toTop" aria-label="Back to top">&uarr;</button>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* copy buttons */
+  $$('figure.code .copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=$('code',b.closest('figure')).textContent;
+      function done(m){var o=b.textContent;b.textContent=m;setTimeout(function(){b.textContent=o},1400)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){done('Copied')},fallback)}else{fallback()}
+      function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');done('Copied')}catch(e){done('Select and copy')}document.body.removeChild(ta)}
+    });
+  });
+
+  /* blur outputs / reveal on click */
+  var hb=$('#hideOut');
+  hb.addEventListener('click',function(){
+    var on=document.body.classList.toggle('hide-out');
+    hb.setAttribute('aria-pressed',on?'true':'false');
+    hb.textContent=on?'Outputs blurred. Click one to reveal it':'Blur outputs to test yourself';
+    if(!on)$$('.out pre.rev').forEach(function(p){p.classList.remove('rev')});
+  });
+  $$('.out pre').forEach(function(p){p.addEventListener('click',function(){if(document.body.classList.contains('hide-out'))p.classList.add('rev')})});
+
+  $('#printBtn').addEventListener('click',function(){window.print()});
+
+  /* checklist progress (saved in this browser when allowed) */
+  var boxes=$$('#checklist input'), fill=$('#barFill'), KEY='java-m1-checklist';
+  var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function paint(){var n=boxes.filter(function(b){return b.checked}).length;fill.style.width=(100*n/boxes.length)+'%'}
+  boxes.forEach(function(b){
+    if(saved[b.id])b.checked=true;
+    b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}paint()});
+  });
+  paint();
+
+  /* sidebar: active section + mobile toggle */
+  var links=$$('#nav a'), map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var secs=$$('header.hero, section[id]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on')}
+      });
+    },{rootMargin:'-15% 0px -70% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+  }
+  var side=$('#side'), mb=$('#menuBtn');
+  mb.addEventListener('click',function(){var o=side.classList.toggle('open');mb.setAttribute('aria-expanded',o?'true':'false')});
+  links.forEach(function(a){a.addEventListener('click',function(){side.classList.remove('open');mb.setAttribute('aria-expanded','false')})});
+  $('#toTop').addEventListener('click',function(){window.scrollTo({top:0})});
+})();
+</script>
+</body>
+</html>
